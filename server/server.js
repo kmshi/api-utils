@@ -14,13 +14,14 @@ var http = require('http');
 var sslConfig = require('./ssl-config');
 
 var app = module.exports = loopback();
+const isSSLEnabled = process.env.HTTPS_ENABLED=="true"?true:false;
 
 app.use(cookieParser());
 
 app.start = function() {
   // start the web server
   var server = null;
-  if(!app.get('httpMode')) {
+  if(isSSLEnabled) {
     var options = {
       key: sslConfig.privateKey,
       cert: sslConfig.certificate
@@ -32,7 +33,7 @@ app.start = function() {
 
   server.listen(app.get('port'),function() {
     app.emit('started', server);
-    var baseUrl = (app.get('httpMode')? 'http://' : 'https://') + app.get('host') + ':' + app.get('port');
+    var baseUrl = (isSSLEnabled? 'https://' : 'http://') + app.get('host') + ':' + app.get('port');
     console.log('Web server listening at: %s', baseUrl);
     if (app.get('loopback-component-explorer')) {
       var explorerPath = app.get('loopback-component-explorer').mountPath;

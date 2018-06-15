@@ -1,6 +1,7 @@
 import { BootScript } from '@mean-expert/boot-script';
 var Agenda:any = require('agenda');
 var Agendash:any = require('agendash');
+const isSSLEnabled = process.env.HTTPS_ENABLED=="true"?true:false;
 
 
 @BootScript()
@@ -33,7 +34,7 @@ class Root {
         app.agenda.on('ready', function () {
             app.agenda.start();
 
-            var baseUrl = (app.get('httpMode')? 'http://' : 'https://') + app.get('host') + ':' + app.get('port');
+            var baseUrl = (isSSLEnabled? 'https://' : 'http://') + app.get('host') + ':' + app.get('port');
             console.log("Agenda started,check agenda jobs at %s/agendash/", baseUrl);
         });
 
