@@ -53,6 +53,14 @@
     "dataSource": "db",
     "public": false
   },
+  "Account":{
+    "dataSource": "account_rest",
+    "public": true
+  },
+  "RuleService":{
+    "dataSource": "rule_rest",
+    "public": false
+  },
   "agendaJobs": {
     "dataSource": "db",
     "public": true,

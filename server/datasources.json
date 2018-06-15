@@ -28,5 +28,53 @@
       },
       "strictSSL": false
     }
+  },
+  "rule_rest": {
+    "name": "rule_rest",
+    "connector": "rest",
+    "debug": true,
+    "options": {
+      "headers": {
+        "accept": "application/json",
+        "content-type": "application/json"
+      },
+      "auth": {
+        "user": "admin",
+        "pass": "supersecret",
+        "sendImmediately": true
+      },
+      "strictSSL": false
+    },
+    "operations":[
+      {
+        "template": {
+          "method": "GET",
+          "url": "{!url}",
+          "headers": {
+            "accept": "application/json",
+            "content-type": "application/json"
+          },
+          "query": "{query}"
+        },
+        "functions": {
+          "rule": ["url", "query"]
+        }
+      },
+      {
+        "template": {
+          "method": "POST",
+          "url": "{!url}",
+          "headers": {
+            "accept": "application/json",
+            "content-type": "application/json"
+          },
+          "query": "{query}",
+          "body": "{body}"
+        },
+        "functions": {
+          "updateRule": ["url", "body", "query"]
+        }
+      }
+    ]
   }
 }

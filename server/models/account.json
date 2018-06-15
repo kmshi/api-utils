@@ -1,0 +1,65 @@
+{
+    "name": "Account",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "strict":"filter",
+    "options": {
+      "validateUpsert": true
+    },
+    "properties": {
+      "nickName":{
+        "type": "string"
+      },
+      "realName":{
+        "type": "string"
+      },
+      "avatorUrl":{
+        "type": "string"
+      },
+      "inviteCode":{
+        "type": "string"
+      },
+      "phoneNum":{
+        "type": "string"
+      },
+      "unionId":{
+        "type": "string"
+      },
+      "email":{
+        "type": "string"
+      },
+      "alipay":{
+        "type": "string"
+      },
+      "openIds":{
+        "type": "object",
+        "description":"gather {appId:openId} from different apps,miniapps,offical accouts",
+        "default":{}
+      },
+      "earningsAll":{
+        "type": "number",
+        "default":0
+      },
+      "earningsRemain":{
+        "type": "number",
+        "default":0
+      },
+      "power":{
+        "type": "number",
+        "description":"fan:0;member:1,2,3;operator:11,12,13;branch:101,102,103",
+        "default":0
+      }
+    },
+    "scope": {
+      "limit": 1000
+    },
+    "validations": [],
+    "relations": {
+    },
+    "acls": [
+    ],
+    "methods": {},
+    "mixins": {
+    }
+}
+  
