@@ -21,11 +21,6 @@
         "accept": "application/json",
         "content-type": "application/json"
       },
-      "auth": {
-        "user": "admin",
-        "pass": "supersecret",
-        "sendImmediately": true
-      },
       "strictSSL": false
     }
   },
@@ -37,11 +32,6 @@
       "headers": {
         "accept": "application/json",
         "content-type": "application/json"
-      },
-      "auth": {
-        "user": "admin",
-        "pass": "supersecret",
-        "sendImmediately": true
       },
       "strictSSL": false
     },
