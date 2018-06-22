@@ -58,7 +58,7 @@
     "public": true
   },
   "RuleService":{
-    "dataSource": "rule_rest",
+    "dataSource": "rest",
     "public": false
   },
   "agendaJobs": {

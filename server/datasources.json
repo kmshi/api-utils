@@ -24,8 +24,8 @@
       "strictSSL": false
     }
   },
-  "rule_rest": {
-    "name": "rule_rest",
+  "rest": {
+    "name": "rest",
     "connector": "rest",
     "debug": true,
     "options": {
@@ -47,7 +47,21 @@
           "query": "{query}"
         },
         "functions": {
-          "rule": ["url", "query"]
+          "get": ["url", "query"]
+        }
+      },
+      {
+        "template": {
+          "method": "DELETE",
+          "url": "{!url}",
+          "headers": {
+            "accept": "application/json",
+            "content-type": "application/json"
+          },
+          "query": "{query}"
+        },
+        "functions": {
+          "delete": ["url", "query"]
         }
       },
       {
@@ -62,7 +76,37 @@
           "body": "{body}"
         },
         "functions": {
-          "updateRule": ["url", "body", "query"]
+          "post": ["url", "body", "query"]
+        }
+      },
+      {
+        "template": {
+          "method": "PUT",
+          "url": "{!url}",
+          "headers": {
+            "accept": "application/json",
+            "content-type": "application/json"
+          },
+          "query": "{query}",
+          "body": "{body}"
+        },
+        "functions": {
+          "put": ["url", "body", "query"]
+        }
+      },
+      {
+        "template": {
+          "method": "PATCH",
+          "url": "{!url}",
+          "headers": {
+            "accept": "application/json",
+            "content-type": "application/json"
+          },
+          "query": "{query}",
+          "body": "{body}"
+        },
+        "functions": {
+          "patch": ["url", "body", "query"]
         }
       }
     ]
