@@ -8,7 +8,6 @@
     "properties": {
     },
     "scope": {
-      "limit": 1000
     },
     "validations": [],
     "relations": {
