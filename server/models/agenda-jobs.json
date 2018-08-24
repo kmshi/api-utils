@@ -35,23 +35,11 @@
       }
     },
     "scope": {
-      "limit": 1000
     },
     "validations": [],
     "relations": {
     },
     "acls": [
-      {
-        "principalType": "ROLE",
-        "principalId": "$everyone",
-        "permission": "DENY"
-      },
-      {
-        "principalType": "ROLE",
-        "principalId": "su",
-        "property": "find",
-        "permission": "ALLOW"
-      }
     ],
     "methods": {},
     "mixins": {

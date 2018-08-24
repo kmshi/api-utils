@@ -1,6 +1,6 @@
 {
     "name": "Account",
-    "base": "PersistedModel",
+    "base": "Model",
     "idInjection": true,
     "strict":"filter",
     "options": {

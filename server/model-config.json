@@ -10,66 +10,21 @@
       "loopback/common/mixins",
       "loopback/server/mixins",
       "../common/mixins",
-      "./mixins",
-      "../node_modules/loopback-ds-timestamp-mixin"
+      "./mixins"
     ]
   },
-  "Customer": {
-    "dataSource": "db",
-    "public": true,
-    "options": {
-      "remoting": {
-        "sharedMethods": {
-          "*": false,
-          "create": true,
-          "login": true,
-          "logout": true,
-          "find": true,
-          "findById": true
-        }
-      }
-    }
-  },
-  "AccessToken": {
-    "dataSource": "db",
-    "public": false,
-    "relations": {
-      "user": {
-        "type": "belongsTo",
-        "model": "Customer",
-        "foreignKey": "userId"
-      }
-    }
-  },
-  "ACL": {
-    "dataSource": "db",
-    "public": false
-  },
-  "RoleMapping": {
-    "dataSource": "db",
-    "public": false
-  },
-  "Role": {
-    "dataSource": "db",
-    "public": false
-  },
   "Account":{
-    "dataSource": "account_rest",
+    "dataSource": "rest",
     "public": true
   },
-  "RuleService":{
-    "dataSource": "rest",
-    "public": false
-  },
   "agendaJobs": {
-    "dataSource": "db",
+    "dataSource": "transient",
     "public": true,
     "options": {
       "remoting": {
         "sharedMethods": {
           "*": false,
-          "count": true,
-          "find": true
+          "find": false
         }
       }
     }

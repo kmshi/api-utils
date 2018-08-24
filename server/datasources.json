@@ -1,28 +1,7 @@
 {
-  "db": {
-    "name": "db",
-    "url":"${MONGODB_URL}",
-    "connector": "mongodb",
-    "host": "127.0.0.1",
-    "port": 27017,
-    "database": "accounts"
-  },
   "transient": {
     "name": "transient",
     "connector": "transient"
-  },
-  "account_rest": {
-    "baseURL": "${ACCOUNT_SERVICE_BASEURL}",
-    "name": "account_rest",
-    "connector": "rest",
-    "debug": true,
-    "options": {
-      "headers": {
-        "accept": "application/json",
-        "content-type": "application/json"
-      },
-      "strictSSL": false
-    }
   },
   "rest": {
     "name": "rest",

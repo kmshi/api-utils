@@ -1,7 +1,7 @@
 FROM node:8-alpine
 MAINTAINER Richard Shi
 
-LABEL name="app-api"
+LABEL name="gateway"
 LABEL vendor="kujianet.com"
 
 #RUN npm config set registry https://registry.cnpmjs.org
@@ -22,5 +22,5 @@ RUN cd /opt/cloud && npm install && npm cache clean --force
 WORKDIR /opt/cloud
 
 # Start cloud
-EXPOSE 4200
+EXPOSE 8001
 CMD ["npm", "start"]

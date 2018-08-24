@@ -3,12 +3,14 @@ var BunyanSlack = require('bunyan-slack');
 
 export var log = bunyan.createLogger({
     name: "cloud",
-    streams: [{
-        type: 'rotating-file',
-        path: './cloud.log',
-        period: '1d',   // daily rotation
-        count: 30        // keep 30 back copies
-    },{
+    streams: [
+    // {
+    //     type: 'rotating-file',
+    //     path: './cloud.log',
+    //     period: '1d',   // daily rotation
+    //     count: 30        // keep 30 back copies
+    // },
+    {
       stream: process.stdout
     }],
     level: "trace"
