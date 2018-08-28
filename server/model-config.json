@@ -15,7 +15,85 @@
   },
   "Account":{
     "dataSource": "rest",
-    "public": true
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "count": true
+        }
+      }
+    }
+  },
+  "Activity":{
+    "dataSource": "rest",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "current": true
+        }
+      }
+    }
+  },
+  "Advertisement":{
+    "dataSource": "rest",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "current": true
+        }
+      }
+    }
+  },
+  "Coupon": {
+    "dataSource": "rest",
+    "public": true,
+    "options":{
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "search": true
+        }
+      }
+    }
+  },
+  "Product": {
+    "dataSource": "transient",
+    "public": false
+  },
+  "Sub": {
+    "dataSource": "transient",
+    "public": false
+  },
+  "Item": {
+    "dataSource": "rest",
+    "public": true,
+    "options":{
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "current": true,
+          "prototype.increment":true
+        }
+      }
+    }
+  },
+  "Life": {
+    "dataSource": "rest",
+    "public": true,
+    "options":{
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "current": true,
+          "prototype.increment":true
+        }
+      }
+    }
   },
   "agendaJobs": {
     "dataSource": "transient",

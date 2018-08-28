@@ -1,0 +1,16 @@
+{
+    "name": "Sub",
+    "base": "Model",
+    "strict":true,
+    "idInjection": false,
+    "properties": {
+      "smallImgUrl": {"type": "string","required":true},
+      "largeImgUrl": {"type": "string","required":true},
+      "coupon": {"type": "Coupon","required":false},
+      "sellOff": {"type": "boolean","required":false,"default":false}
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [],
+    "methods": {}
+  }

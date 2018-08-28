@@ -1,0 +1,102 @@
+{
+    "name": "Coupon",
+    "base": "Model",
+    "strict":true,
+    "idInjection": false,
+    "properties": {
+      "coupon_id":{
+        "type": "string",
+        "required":true
+      },
+      "coupon_amount":{
+        "type": "number",
+        "index":true
+      },
+      "coupon_after_price":{
+        "type": "number",
+        "index":true
+      },
+      "coupon_info":{
+        "type": "string"
+      },
+      "coupon_start_fee":{
+        "type": "number"
+      },
+      "coupon_total_count":{
+        "type": "number"
+      },
+      "coupon_remain_count":{
+        "type": "number"
+      },
+      "coupon_src_scene":{
+        "type": "number"
+      },
+      "coupon_type":{
+        "type": "number"
+      },
+      "coupon_start_time":{
+        "type": "date"
+      },
+      "coupon_end_time":{
+        "type": "date"
+      },
+      "coupon_share_url":{
+        "type": "string",
+        "index":true
+      },
+      "source_from":{
+        "type": "string"
+      },
+      "videoid":{
+        "type": "number",
+        "default":0
+      },
+      "sale_month":{
+        "type": "number"
+      },
+      "sale_2hours":{
+        "type": "number"
+      },
+      "sale_today":{
+        "type": "number"
+      },
+      "item_description":{
+        "type": "string"
+      },
+      "text":{
+        "type": "string"
+      },
+      "copy_text":{
+        "type": "string"
+      },
+      "coupon_receive_today":{
+        "type": "number"
+      },
+      "coupon_receive_2hours":{
+        "type": "number"
+      },
+      "is_brand":{
+        "type": "number"
+      },
+      "is_live":{
+        "type": "number"
+      },
+      "is_explosion":{
+        "type": "number"
+      },
+      "isquality":{
+        "type": "number"
+      },
+      "general_index":{
+        "type": "number",
+        "index":true
+      },
+      "product":{
+        "type": "Product"
+      }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [],
+    "methods": {}
+  }
