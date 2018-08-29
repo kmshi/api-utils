@@ -1,64 +1,152 @@
 {
-    "name": "Account",
-    "base": "Model",
-    "idInjection": true,
-    "strict":"filter",
-    "options": {
-      "validateUpsert": true
+  "name": "Account",
+  "base": "Model",
+  "idInjection": true,
+  "strict":"filter",
+  "options": {
+    "validateUpsert": true,
+    "forceId":false
+  },
+  "properties": {
+    "nickName":{
+      "type": "string"
     },
-    "properties": {
-      "nickName":{
-        "type": "string"
-      },
-      "realName":{
-        "type": "string"
-      },
-      "avatorUrl":{
-        "type": "string"
-      },
-      "inviteCode":{
-        "type": "string"
-      },
-      "phoneNum":{
-        "type": "string"
-      },
-      "unionId":{
-        "type": "string"
-      },
-      "email":{
-        "type": "string"
-      },
-      "alipay":{
-        "type": "string"
-      },
-      "openIds":{
-        "type": "object",
-        "description":"gather {appId:openId} from different apps,miniapps,offical accouts",
-        "default":{}
-      },
-      "earningsAll":{
-        "type": "number",
-        "default":0
-      },
-      "earningsRemain":{
-        "type": "number",
-        "default":0
-      },
-      "power":{
-        "type": "number",
-        "description":"fan:0;member:1,2,3;operator:11,12,13;branch:101,102,103",
-        "default":0
-      }
+    "realName":{
+      "type": "string"
     },
-    "scope": {
+    "avatorUrl":{
+      "type": "string"
     },
-    "validations": [],
-    "relations": {
+    "inviteCode":{
+      "type": "string",
+      "index": true
     },
-    "acls": [
-    ],
-    "methods": {},
-    "mixins": {
+    "mobilePhone":{
+      "type": "string",
+      "index": true
+    },
+    "unionId":{
+      "type": "string",
+      "index": true
+    },
+    "email":{
+      "type": "string"
+    },
+    "alipay":{
+      "type": "string"
+    },
+    "channel_id":{
+      "type": "string"
+    },
+    "isAndroid":{
+      "type": "boolean"
+    },
+    "pid_taobao":{
+      "type": "string"
+    },
+    "pid_pinduoduo":{
+      "type": "string"
+    },
+    "pid_jd":{
+      "type": "string"
+    },
+    "oid_taobao":{
+      "type": "string",
+      "description": "the last 6 numbers of order id can be used to identify a buyer"
+    },
+    "openIds":{
+      "type": "object",
+      "description":"gather {appId:openId} from different apps,miniapps,offical accouts",
+      "default":{}
+    },
+    "earningsAll":{
+      "type": "number",
+      "default":0
+    },
+    "earningsRedpack":{
+      "type": "number",
+      "default":0
+    },
+    "earningsRemain":{
+      "type": "number",
+      "default":0
+    },
+    "power":{
+      "type": "number",
+      "description":"fan:0~99;member:101~999;operator:1001~9999;branch:10001~99999",
+      "default":0
+    },
+    "sociability":{
+      "type": "number",
+      "description":"used in uplevel1_x to motivate building more relations",
+      "default":0
+    },
+    "ignoreOperator":{
+      "type": "boolean",
+      "default":false
+    },
+    "ignoreBranch":{
+      "type": "boolean",
+      "default":false
+    },
+    "parentId":{
+      "type": "string",
+      "index": true
+    },
+    "branchId":{
+      "type": "string",
+      "index": true
+    },
+    "totalNum":{
+      "type": "number",
+      "default":0
+    },
+    "memberNum":{
+      "type": "number",
+      "default":0
+    },
+    "operatorNum":{
+      "type": "number",
+      "default":0
+    },
+    "totalPreFeeMonthly":{
+      "type": "object",
+      "description":"{2018-07_ORDER/RELATION/TEAM/ALL:100.00}",
+      "default":{}
+    },
+    "totalFeeMonthly":{
+      "type": "object",
+      "description":"{2018-07_ORDER/RELATION/TEAM/ALL:100.00}",
+      "default":{}
+    },
+    "preOrderNumMonthly":{
+      "type": "object",
+      "description":"{2018-07:21}",
+      "default":{}
+    },
+    "preOrderNumTotal":{
+      "type": "number",
+      "default":0
+    },
+    "orderNumMonthly":{
+      "type": "object",
+      "description":"{2018-07:18}",
+      "default":{}
+    },
+    "orderNumTotal":{
+      "type": "number",
+      "default":0
     }
+  },
+  "hidden":["openIds","unionId"],
+  "scope": {
+  },
+  "validations": [],
+  "relations": {
+  },
+  "acls": [
+  ],
+  "methods": {},
+  "mixins": {
+  }
 }
-  

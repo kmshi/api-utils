@@ -20,7 +20,27 @@
       "remoting": {
         "sharedMethods": {
           "*": false,
-          "count": true
+          "findById":true,
+          "findOrCreateFanByUnionId": true,
+          "findOrCreateFanByMobilePhone":true,
+          "requestSMSCode":true,
+          "bindMobilePhone":true,
+          "bindAlipayAndMobilePhone":true,
+          "updateChannelId":true,
+          "withdraw":true,
+          "todayReport":true,
+          "yesterdayReport":true,
+          "getDirectOrders":true,
+          "getRelationOrders":true,
+          "getTeamOrders":true,
+          "getLevel1Children":true,
+          "getLevel2Children":true,
+          "getNotifications":true,
+          "getNotificationsUnreadCount":true,
+          "checkinRedbag":true,
+          "answerQuestionaireRedbag":true,
+          "getPrivateRedbags":true,
+          "openRedbag":true
         }
       }
     }
