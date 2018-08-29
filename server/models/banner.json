@@ -1,0 +1,32 @@
+{
+    "name": "Banner",
+    "base": "Model",
+    "idInjection": true,
+    "strict":"filter",
+    "options": {
+      "validateUpsert": true
+    },
+    "properties": {      
+      "img_src":{
+        "type": "string",
+        "required":true
+      },
+      "url":{
+        "type": "string",
+        "required":true
+      },
+      "description":{
+        "type": "string",
+        "required":false
+      }
+    },
+    "scope": {
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [
+    ],
+    "methods": {},
+    "mixins": {
+    }
+}

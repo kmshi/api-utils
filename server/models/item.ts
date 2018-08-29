@@ -23,15 +23,17 @@ module.exports = function (Item: any) {
         ]
     });
 
-    Item.prototype.increment = function(accountId:string, cb: Function){
-        return Item.get(BASEURL+'/Items/'+this.id.toString()+'/increment',{accountId:accountId},cb);
+    Item.increment = function(id:any,accountId:string, cb: Function){
+        return Item.get(BASEURL+'/Items/'+id+'/increment',{accountId:accountId},cb);
     }
 
-    Item.remoteMethod('prototype.increment', {
+    Item.remoteMethod('increment', {
         accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,
+            http: {source: 'path'}},
             {arg: 'accountId',type: 'string'},
         ],
-        http: {path: '/increment', verb: 'get'},
+        http: {path: '/:id/increment', verb: 'get'},
         returns: [
             { arg: 'data', type: 'Item',root:true}
         ]

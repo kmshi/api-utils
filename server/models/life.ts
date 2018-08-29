@@ -23,15 +23,17 @@ module.exports = function (Life: any) {
         ]
     });
 
-    Life.prototype.increment = function(accountId:string, cb: Function){
-        return Life.get(BASEURL+'/Lifes/'+this.id.toString()+'/increment',{accountId:accountId},cb);
+    Life.increment = function(id:any, accountId:string, cb: Function){
+        return Life.get(BASEURL+'/Lifes/'+id+'/increment',{accountId:accountId},cb);
     }
 
-    Life.remoteMethod('prototype.increment', {
+    Life.remoteMethod('increment', {
         accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,
+            http: {source: 'path'}},
             {arg: 'accountId',type: 'string'},
         ],
-        http: {path: '/increment', verb: 'get'},
+        http: {path: '/:id/increment', verb: 'get'},
         returns: [
             { arg: 'data', type: 'Life',root:true}
         ]

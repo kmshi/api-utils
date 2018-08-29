@@ -19,16 +19,18 @@ module.exports = function (Custom: any) {
         http: {verb: 'get', path: '/'},
     });
 
-    Custom.prototype.goods = function(page_no:number,page_size:number,cb:Function){
-        return Custom.get(BASEURL+'/Customs/'+this.id.toString()+'/goods',{page_no:page_no,page_size:page_size},cb);
+    Custom.goods = function(id:any,page_no:number,page_size:number,cb:Function){
+        return Custom.get(BASEURL+'/Customs/'+id+'/goods',{page_no:page_no,page_size:page_size},cb);
     }
 
-    Custom.remoteMethod('prototype.goods', {
+    Custom.remoteMethod('goods', {
         accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,
+            http: {source: 'path'}},
             {arg: 'page_no',type: 'number',description:'第几页，默认：１'},
             {arg: 'page_size',type: 'number',description:'页大小，默认20，1~100'},
         ],
-        http: {path: '/goods', verb: 'get'},
+        http: {path: '/:id/goods', verb: 'get'},
         returns: [
             { arg: 'items', type: ['Coupon'],root:true}
         ]
