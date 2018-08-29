@@ -49,6 +49,34 @@
       }
     }
   },
+  "System": {
+    "dataSource": "rest",
+    "public": true,
+    "options":{
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "find": true,
+          "xgoods": true,
+          "findBySubcat": true,
+          "prototype.goods":true
+        }
+      }
+    }
+  },
+  "Custom": {
+    "dataSource": "rest",
+    "public": true,
+    "options":{
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "find": true,
+          "prototype.goods":true
+        }
+      }
+    }
+  },
   "Coupon": {
     "dataSource": "rest",
     "public": true,
