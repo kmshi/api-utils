@@ -1,3 +1,4 @@
+import {resolve,reject} from '../lib/utils';
 const BASEURL = process.env.ACCOUNT_SERVICE_BASEURL;
 
 module.exports = function(Account:any) {
@@ -421,6 +422,56 @@ module.exports = function(Account:any) {
         http: {path: '/:id/openRedbag', verb: 'put'},
         returns: [
             { arg: 'redpack', type: 'Redpack',root:true}
+        ]
+    });
+
+    Account.rate = function(id:any,cb:Function){
+        return Account.get(
+            BASEURL+'/Accounts/'+id+'/rate',
+            null,
+            cb
+        );
+    }
+
+    Account.remoteMethod('rate', {
+        accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+        ],
+        http: {path: '/:id/rate', verb: 'get'},
+        returns: [
+            { arg: 'info', type: 'object',root:true}
+        ]
+    });
+
+    Account.shareInfo = function(id:any,num_iid:string,coupon_id:string,cb:Function){
+        let func = async () => {
+            try {
+                let info = {
+                    pid:"",
+                    tpwd:"",
+                    coupon_click_url:"",
+                    share_domain:""
+                };
+                //info.pid = await this.getParentTaobaoPid();
+                
+                return resolve(info,cb);
+            } catch (err) {
+                return reject(err, cb);
+            }
+        };
+        let ret = func();
+        if(!cb) return ret;
+    }
+
+    Account.remoteMethod('shareInfo', {
+        accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+            {arg: 'num_iid',type: 'string'},
+            {arg: 'coupon_id',type: 'string'},
+        ],
+        http: {path: '/:id/shareInfo', verb: 'get'},
+        returns: [
+            { arg: 'info', type: 'object',root:true}
         ]
     });
 }

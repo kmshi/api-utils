@@ -40,7 +40,9 @@
           "checkinRedbag":true,
           "answerQuestionaireRedbag":true,
           "getPrivateRedbags":true,
-          "openRedbag":true
+          "openRedbag":true,
+          "rate":true,
+          "shareInfo":true
         }
       }
     }
