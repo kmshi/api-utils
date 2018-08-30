@@ -513,8 +513,13 @@ module.exports = function(Account:any) {
                     max_commission_rate:0
                 };
 
-                let pidData = await Account.get(BASEURL+'/Accounts/'+id+'/getParentTaobaoPid');
-                info.pid = pidData.pid;
+                let account = await Account.findById(id);
+                info.pid = account.pid_taobao;
+                if (!info.pid){
+                    let pidData = await Account.get(BASEURL+'/Accounts/'+id+'/getParentTaobaoPid');
+                    info.pid = pidData.pid;
+                }
+                
                 let urlData = await Account.app.models.Domain.random();
                 info.share_domain = urlData.url;
 
