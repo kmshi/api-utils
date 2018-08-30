@@ -425,6 +425,65 @@ module.exports = function(Account:any) {
         ]
     });
 
+    Account.upgradeToMember = function (id:any,cb: Function) {
+        return Account.put(
+            BASEURL+'/Accounts/'+id+'/upgradeToMember',
+            null,
+            null,
+            cb
+        );
+    }
+
+    Account.remoteMethod('upgradeToMember', {
+        accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+        ],
+        http: {path: '/:id/upgradeToMember', verb: 'put'},
+        returns: [
+            { arg: 'account', type: 'Account',root:true}
+        ]
+    });
+
+    Account.buildMappingByParentInviteCode = function (id:any,inviteCode: string, cb: Function) {
+        return Account.put(
+            BASEURL+'/Accounts/'+id+'/buildMappingByParentInviteCode',
+            {inviteCode:inviteCode},
+            null,
+            cb
+        );
+    }
+
+    Account.remoteMethod('buildMappingByParentInviteCode', {
+        accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+            {arg: 'inviteCode',type: 'string'}
+        ],
+        http: {path: '/:id/buildMappingByParentInviteCode', verb: 'put'},
+        returns: [
+            { arg: 'account', type: 'Account',root:true}
+        ]
+    });
+
+    Account.buildMappingByParentMobilePhone = function (id:any,mobilePhone: string, cb: Function) {
+        return Account.put(
+            BASEURL+'/Accounts/'+id+'/buildMappingByParentMobilePhone',
+            {mobilePhone:mobilePhone},
+            null,
+            cb
+        );
+    }
+
+    Account.remoteMethod('buildMappingByParentMobilePhone', {
+        accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+            {arg: 'mobilePhone',type: 'string'}
+        ],
+        http: {path: '/:id/buildMappingByParentMobilePhone', verb: 'put'},
+        returns: [
+            { arg: 'account', type: 'Account',root:true}
+        ]
+    });
+
     Account.rate = function(id:any,cb:Function){
         return Account.get(
             BASEURL+'/Accounts/'+id+'/rate',

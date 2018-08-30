@@ -41,6 +41,9 @@
           "answerQuestionaireRedbag":true,
           "getPrivateRedbags":true,
           "openRedbag":true,
+          "upgradeToMember":true,
+          "buildMappingByParentMobilePhone":true,
+          "buildMappingByParentInviteCode":true,
           "rate":true,
           "shareInfo":true
         }
