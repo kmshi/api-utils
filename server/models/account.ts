@@ -456,7 +456,8 @@ module.exports = function(Account:any) {
 
                 let pidData = await Account.get(BASEURL+'/Accounts/'+id+'/getParentTaobaoPid');
                 info.pid = pidData.pid;
-                info.share_domain = "https://coolhuo.com";
+                let urlData = await Account.app.models.Domain.random();
+                info.share_domain = urlData.url;
 
                 if (!!num_iid){
                     let shareData = await Account.app.models.Share.findOrRetrieveByPid(pidData.pid,num_iid,coupon_id);

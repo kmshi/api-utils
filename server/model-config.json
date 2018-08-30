@@ -170,6 +170,10 @@
       }
     }
   },
+  "Domain": {
+    "dataSource": "rest",
+    "public": false
+  },
   "agendaJobs": {
     "dataSource": "transient",
     "public": true,
