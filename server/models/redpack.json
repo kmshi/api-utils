@@ -1,0 +1,32 @@
+{
+    "name": "Redpack",
+    "base": "Model",
+    "idInjection": true,
+    "strict":"filter",
+    "options": {
+      "validateUpsert": true
+    },
+    "properties": {
+      "answer":{
+        "type": "object",
+        "required":true
+      },"fee":{
+        "type": "number",
+        "required":true
+      },"category":{
+        "type": "string",
+        "description":"NEWBIE/QUESTIONAIRE/CHECKIN/ORDER1/ORDER5/ORDER10/ORDER20/ORDER50/ORDER100",
+        "required":true
+      }
+    },
+    "scope": {
+    },
+    "validations": [],
+    "relations": {
+    },
+    "acls": [
+    ],
+    "methods": {},
+    "mixins": {
+    }
+}

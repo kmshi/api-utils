@@ -1,0 +1,118 @@
+{
+  "name": "Trade",
+  "base": "Model",
+  "strict":"filter",
+  "idInjection": false,
+  "properties": {
+    "trade_id":{
+      "type": "string",
+      "required":true
+    },
+    "trade_parent_id":{
+      "type": "string"
+    },
+    "num_iid":{
+      "type": "string"
+    },
+    "pict_url":{
+      "type": "string"
+    },
+    "item_title":{
+      "type": "string"
+    },
+    "item_num":{
+      "type": "number"
+    },
+    "price":{
+      "type": "string"
+    },
+    "alipay_total_price":{
+      "type": "string"
+    },
+    "pay_price":{
+      "type": "string"
+    },
+    "seller_nick":{
+      "type": "string"
+    },
+    "seller_shop_title":{
+      "type": "string"
+    },
+    "commission":{
+      "type": "string",
+      "description":"预估收入,结算金额*(佣金比率+补贴比率)*分成比率"
+    },
+    "commission_rate":{
+      "type": "string"
+    },
+    "create_time":{
+      "type": "date"
+    },
+    "click_time":{
+      "type": "date"
+    },
+    "earning_time":{
+      "type": "date"
+    },
+    "tk_status":{
+      "type": "number",
+      "description": "淘客订单状态，3：订单结算，12：订单付款， 13：订单失效，14：订单成功"
+    },
+    "tk3rd_type":{
+      "type": "string"
+    },
+    "tk3rd_pub_id":{
+      "type": "string"
+    },
+    "order_type":{
+      "type": "string"
+    },
+    "income_rate":{
+      "type": "string"
+    },
+    "pub_share_pre_fee":{
+      "type": "string",
+      "description":"效果预估，付款金额*(佣金比率+补贴比率)*分成比率"
+    },
+    "subsidy_rate":{
+      "type": "string"
+    },
+    "subsidy_type":{
+      "type": "string"
+    },
+    "subsidy_fee":{
+      "type": "string"
+    },
+    "terminal_type":{
+      "type": "string"
+    },
+    "auction_category":{
+      "type": "string"
+    },
+    "site_id":{
+      "type": "string"
+    },
+    "site_name":{
+      "type": "string"
+    },
+    "adzone_id":{
+      "type": "string"
+    },
+    "adzone_name":{
+      "type": "string"
+    },
+    "total_commission_rate":{
+      "type": "string"
+    },
+    "total_commission_fee":{
+      "type": "string"
+    },
+    "relation_id":{
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

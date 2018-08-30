@@ -1,0 +1,51 @@
+{
+    "name": "Redbag",
+    "base": "Model",
+    "idInjection": true,
+    "strict":"filter",
+    "options": {
+      "validateUpsert": true
+    },
+    "properties": {
+      "challenge":{
+        "type": "object",
+        "required":true
+      },"total":{
+        "type": "number",
+        "required":true
+      },"quantity":{
+        "type": "number",
+        "required":true
+      },"memo":{
+        "type": "string",
+        "required":false
+      },"balance":{
+        "type": "number",
+        "default":0
+      },"expired":{
+        "type": "boolean",
+        "default":false
+      },"category":{
+        "type": "string",
+        "description":"NEWBIE/QUESTIONAIRE/CHECKIN/ORDER1/ORDER5/ORDER10/ORDER20/ORDER50",
+        "required":true
+      },"divides":{
+        "type": ["number"],
+        "default":[]
+      },"cashBagRefund":{
+        "type": "number",
+        "default":0
+      }
+    },
+    "hidden":["divides"],
+    "scope": {
+    },
+    "validations": [],
+    "relations": {
+    },
+    "acls": [
+    ],
+    "methods": {},
+    "mixins": {
+    }
+}

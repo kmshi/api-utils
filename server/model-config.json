@@ -123,6 +123,22 @@
     "dataSource": "transient",
     "public": false
   },
+  "Notification": {
+    "dataSource": "transient",
+    "public": false
+  },
+  "Trade": {
+    "dataSource": "transient",
+    "public": false
+  },
+  "Redbag": {
+    "dataSource": "transient",
+    "public": false
+  },
+  "Redpack": {
+    "dataSource": "transient",
+    "public": false
+  },
   "Item": {
     "dataSource": "rest",
     "public": true,
