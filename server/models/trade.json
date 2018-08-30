@@ -109,6 +109,12 @@
     },
     "relation_id":{
       "type": "string"
+    },
+    "feeEarned":{
+      "type": "string"
+    },
+    "preFeeEarned":{
+      "type": "string"
     }
   },
   "validations": [],
