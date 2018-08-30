@@ -26,4 +26,17 @@ module.exports = function (Coupon: any) {
         ]
     });
 
+    Coupon.queryTpwd = function(password_content:string,cb:Function){
+        return Coupon.get(BASEURL+'/Alimamas/queryTpwd',{password_content:password_content},cb);
+    }
+
+    Coupon.remoteMethod('queryTpwd', {
+        accepts: [
+            {arg: 'password_content', type: 'string'}
+        ],
+        http: {path: '/queryTpwd', verb: 'get'},
+        returns: [
+            { arg: 'info', type: 'object',root:true}
+        ]
+    });
 }

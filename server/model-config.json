@@ -106,10 +106,15 @@
       "remoting": {
         "sharedMethods": {
           "*": false,
-          "search": true
+          "search": true,
+          "queryTpwd":true
         }
       }
     }
+  },
+  "Share": {
+    "dataSource": "rest",
+    "public": false
   },
   "Product": {
     "dataSource": "transient",

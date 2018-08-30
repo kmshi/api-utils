@@ -450,9 +450,20 @@ module.exports = function(Account:any) {
                     pid:"",
                     tpwd:"",
                     coupon_click_url:"",
-                    share_domain:""
+                    share_domain:"",
+                    max_commission_rate:0
                 };
-                //info.pid = await this.getParentTaobaoPid();
+
+                let pidData = await Account.get(BASEURL+'/Accounts/'+id+'/getParentTaobaoPid');
+                info.pid = pidData.pid;
+                info.share_domain = "https://coolhuo.com";
+
+                if (!!num_iid){
+                    let shareData = await Account.app.models.Share.findOrRetrieveByPid(pidData.pid,num_iid,coupon_id);
+                    info.tpwd = shareData.tpwd;
+                    info.coupon_click_url = shareData.coupon_click_url;
+                    info.max_commission_rate = shareData.max_commission_rate;
+                }
                 
                 return resolve(info,cb);
             } catch (err) {
