@@ -107,6 +107,9 @@
     "total_commission_fee":{
       "type": "string"
     },
+    "refund_status":{
+      "type": "string"
+    },
     "relation_id":{
       "type": "string"
     },
