@@ -9,7 +9,7 @@
     "properties": {
       "challenge":{
         "type": "object",
-        "required":true
+        "required":false
       },"total":{
         "type": "number",
         "required":true
@@ -27,7 +27,7 @@
         "default":false
       },"category":{
         "type": "string",
-        "description":"NEWBIE/QUESTIONAIRE/CHECKIN/ORDER1/ORDER5/ORDER10/ORDER20/ORDER50",
+        "description":"NEWBIE/QUESTIONAIRE/CHECKIN/ORDER{num}/INVITE{num}",
         "required":true
       },"divides":{
         "type": ["number"],

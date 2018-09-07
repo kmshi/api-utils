@@ -9,13 +9,13 @@
     "properties": {
       "answer":{
         "type": "object",
-        "required":true
+        "required":false
       },"fee":{
         "type": "number",
         "required":true
       },"category":{
         "type": "string",
-        "description":"NEWBIE/QUESTIONAIRE/CHECKIN/ORDER1/ORDER5/ORDER10/ORDER20/ORDER50/ORDER100",
+        "description":"NEWBIE/QUESTIONAIRE/CHECKIN/ORDER{num}/INVITE{num}",
         "required":true
       }
     },
