@@ -528,6 +528,7 @@ module.exports = function(Account:any) {
                     info.tpwd = shareData.tpwd;
                     info.coupon_click_url = shareData.coupon_click_url;
                     info.max_commission_rate = shareData.max_commission_rate;
+                    info.pid = shareData.pid;
                 }
                 
                 return resolve(info,cb);
