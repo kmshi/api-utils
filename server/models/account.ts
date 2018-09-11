@@ -302,6 +302,26 @@ module.exports = function(Account:any) {
         ]
     });
 
+    Account.getBills = function(id:any,page_no:number,page_size:number,cb:Function){
+        return Account.get(
+            BASEURL+'/Accounts/'+id+'/getBills',
+            {page_no:page_no,page_size:page_size},
+            cb
+        );
+    }
+
+    Account.remoteMethod('getBills', {
+        accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+            {arg: 'page_no',type: 'number',description:'第几页，默认：１'},
+            {arg: 'page_size',type: 'number',description:'页大小，默认20，1~100'},
+        ],
+        http: {path: '/:id/getBills', verb: 'get'},
+        returns: [
+            { arg: 'bills', type: ['Bill'],root:true}
+        ]
+    });
+
     Account.getNotifications = function(id:any,messageTypes:string,autoMarkRead:boolean,page_no:number,page_size:number,cb:Function){
         return Account.get(
             BASEURL+'/Accounts/'+id+'/getNotifications',
@@ -313,7 +333,7 @@ module.exports = function(Account:any) {
     Account.remoteMethod('getNotifications', {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
-            {arg: 'messageTypes', type: 'string', description:'ACCOUNT/WITHDRAW/EARNING/SYSTEM,support multiple types seperated by ","'},
+            {arg: 'messageTypes', type: 'string', description:'ACCOUNT,WITHDRAW,EARNING,SYSTEM (support multiple types seperated by ",")'},
             {arg: 'autoMarkRead',type: 'boolean',description:'auto mark those notifications'},
             {arg: 'page_no',type: 'number',description:'第几页，默认：１'},
             {arg: 'page_size',type: 'number',description:'页大小，默认20，1~100'},

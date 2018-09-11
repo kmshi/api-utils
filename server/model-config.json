@@ -37,6 +37,7 @@
           "getLevel2Children":true,
           "getNotifications":true,
           "getNotificationsUnreadCount":true,
+          "getBills":true,
           "checkinRedbag":true,
           "answerQuestionaireRedbag":true,
           "getPrivateRedbags":true,
@@ -128,6 +129,10 @@
     "public": false
   },
   "Banner": {
+    "dataSource": "transient",
+    "public": false
+  },
+  "Bill": {
     "dataSource": "transient",
     "public": false
   },
