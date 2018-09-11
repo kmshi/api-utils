@@ -206,10 +206,10 @@ module.exports = function(Account:any) {
         ]
     });
 
-    Account.getDirectOrders = function (id:any,page_no: number,page_size:number, cb: Function) {
+    Account.getDirectOrders = function (id:any,page_no: number,page_size:number,status:number,cb: Function) {
         return Account.get(
             BASEURL+'/Accounts/'+id+'/getDirectOrders',
-            {page_no:page_no,page_size:page_size},
+            {page_no:page_no,page_size:page_size,status:status},
             cb
         );
     }
@@ -218,7 +218,8 @@ module.exports = function(Account:any) {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
             {arg: 'page_num',type: 'number'},
-            {arg: 'page_size',type: 'number'}
+            {arg: 'page_size',type: 'number'},
+            {arg: 'status',type: 'number',description:'0(null):ALL,3:订单结算,12:订单付款,13:订单失效'}
         ],
         http: {path: '/:id/getDirectOrders', verb: 'get'},
         returns: [
@@ -226,10 +227,10 @@ module.exports = function(Account:any) {
         ]
     });
 
-    Account.getRelationOrders = function (id:any,page_no: number,page_size:number, cb: Function) {
+    Account.getRelationOrders = function (id:any,page_no: number,page_size:number,status:number, cb: Function) {
         return Account.get(
             BASEURL+'/Accounts/'+id+'/getRelationOrders',
-            {page_no:page_no,page_size:page_size},
+            {page_no:page_no,page_size:page_size,status:status},
             cb
         );
     }
@@ -238,7 +239,8 @@ module.exports = function(Account:any) {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
             {arg: 'page_num',type: 'number'},
-            {arg: 'page_size',type: 'number'}
+            {arg: 'page_size',type: 'number'},
+            {arg: 'status',type: 'number',description:'0(null):ALL,3:订单结算,12:订单付款,13:订单失效'}
         ],
         http: {path: '/:id/getRelationOrders', verb: 'get'},
         returns: [
@@ -246,10 +248,10 @@ module.exports = function(Account:any) {
         ]
     });
 
-    Account.getTeamOrders = function (id:any,page_no: number,page_size:number, cb: Function) {
+    Account.getTeamOrders = function (id:any,page_no: number,page_size:number,status:number, cb: Function) {
         return Account.get(
             BASEURL+'/Accounts/'+id+'/getTeamOrders',
-            {page_no:page_no,page_size:page_size},
+            {page_no:page_no,page_size:page_size,status:status},
             cb
         );
     }
@@ -258,7 +260,8 @@ module.exports = function(Account:any) {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
             {arg: 'page_num',type: 'number'},
-            {arg: 'page_size',type: 'number'}
+            {arg: 'page_size',type: 'number'},
+            {arg: 'status',type: 'number',description:'0(null):ALL,3:订单结算,12:订单付款,13:订单失效'}
         ],
         http: {path: '/:id/getTeamOrders', verb: 'get'},
         returns: [
