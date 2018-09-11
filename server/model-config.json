@@ -111,6 +111,7 @@
         "sharedMethods": {
           "*": false,
           "search": true,
+          "hotkeywords":true,
           "queryTpwd":true
         }
       }

@@ -39,4 +39,17 @@ module.exports = function (Coupon: any) {
             { arg: 'info', type: 'object',root:true}
         ]
     });
+
+    Coupon.hotkeywords = function(cb:Function){
+        return Coupon.get(BASEURL+'/Haodankus/hotkeywords',null,cb);
+    }
+
+    Coupon.remoteMethod('hotkeywords', {
+        accepts: [
+        ],
+        http: {path: '/hotkeywords', verb: 'get'},
+        returns: [
+            { arg: 'words', type: ['object'],root:true}
+        ]
+    });
 }
