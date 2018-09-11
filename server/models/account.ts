@@ -266,10 +266,10 @@ module.exports = function(Account:any) {
         ]
     });
 
-    Account.getLevel1Children = function (id:any,cb: Function) {
+    Account.getLevel1Children = function (id:any,page_no:number,page_size:number,cb: Function) {
         return Account.get(
             BASEURL+'/Accounts/'+id+'/getLevel1Children',
-            null,
+            {page_no:page_no,page_size:page_size},
             cb
         );
     }
@@ -277,13 +277,15 @@ module.exports = function(Account:any) {
     Account.remoteMethod('getLevel1Children', {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+            {arg: 'page_no',type: 'number'},
+            {arg: 'page_size',type: 'number'}
         ],
         http: {path: '/:id/getLevel1Children', verb: 'get'},
         returns: [
             { arg: 'accounts', type: ['Account'],root:true}
         ]
     });
-
+/*
     Account.getLevel2Children = function (id:any,cb: Function) {
         return Account.get(
             BASEURL+'/Accounts/'+id+'/getLevel2Children',
@@ -301,7 +303,7 @@ module.exports = function(Account:any) {
             { arg: 'accounts', type: ['Account'],root:true}
         ]
     });
-
+*/
     Account.getBills = function(id:any,page_no:number,page_size:number,cb:Function){
         return Account.get(
             BASEURL+'/Accounts/'+id+'/getBills',

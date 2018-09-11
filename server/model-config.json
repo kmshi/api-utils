@@ -34,7 +34,7 @@
           "getRelationOrders":true,
           "getTeamOrders":true,
           "getLevel1Children":true,
-          "getLevel2Children":true,
+          "getLevel2Children":false,
           "getNotifications":true,
           "getNotificationsUnreadCount":true,
           "getBills":true,
