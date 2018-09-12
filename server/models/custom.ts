@@ -36,4 +36,24 @@ module.exports = function (Custom: any) {
         ]
     });
 
+    Custom.xgoods = function(customIds:string,page_no:number,page_size:number,cb:Function){
+        return Custom.get(
+            BASEURL+'/Customs/xgoods',
+            {customIds:customIds,page_no:page_no,page_size:page_size},
+            cb
+        );
+    }
+
+    Custom.remoteMethod('xgoods', {
+        accepts: [
+            {arg: 'customIds',type: 'string',description:'支持多customId筛选，如03cb0af4ad3b46550000abab,03cb0af4ad3b46550000acac,03cb0af4ad3b46550000adad,逗号仅限英文逗号'},
+            {arg: 'page_no',type: 'number',description:'第几页，默认：１'},
+            {arg: 'page_size',type: 'number',description:'页大小，默认20，1~100'},
+        ],
+        description:"find goods aggregated from multiple sources/customids",
+        http: {path: '/xgoods', verb: 'get'},
+        returns: [
+            { arg: 'items', type: ['Coupon'],root:true}
+        ]
+    });
 }

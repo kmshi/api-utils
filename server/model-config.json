@@ -98,7 +98,8 @@
         "sharedMethods": {
           "*": false,
           "find": true,
-          "goods":true
+          "goods":true,
+          "xgoods":true
         }
       }
     }
