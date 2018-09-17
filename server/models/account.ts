@@ -535,7 +535,6 @@ module.exports = function(Account:any) {
                     pid:"",
                     tpwd:"",
                     coupon_click_url:"",
-                    share_domain:"",
                     max_commission_rate:0
                 };
 
@@ -545,9 +544,6 @@ module.exports = function(Account:any) {
                     let pidData = await Account.get(BASEURL+'/Accounts/'+id+'/getParentTaobaoPid');
                     info.pid = pidData.pid;
                 }
-                
-                let urlData = await Account.app.models.Domain.random();
-                info.share_domain = urlData.url+'/couponShare.html';
 
                 if (!!num_iid){
                     let shareData = await Account.app.models.Share.findOrRetrieveByPid(info.pid,num_iid,coupon_id);
@@ -578,28 +574,33 @@ module.exports = function(Account:any) {
         ]
     });
 
-    Account.createCouponShareImage = function(id:any,coupon:any,force:boolean,cb:Function){
+    Account.getCouponShareImageAndLink = function(id:any,num_iid:string,coupon_id:string,force:boolean,cb:Function){
         let func = async () => {
             try {
-                let info = await Account.shareInfo(id,coupon.num_iid,coupon.coupon_id);
-                let params:any = {
-                    picUrl:coupon.product.pict_url,
-                    title:coupon.product.title,
-                    zk_final_price:coupon.product.zk_final_price,
-                    coupon_amount:coupon.coupon_amount,
-                    isTmall:coupon.product.user_type,
-                    tpwd:info.tpwd
-                };
-        
-                params.shareUrl = info.share_domain+'?'+stringify(params);
-        
-                let url = "file://"+process.cwd()+"/client/couponShare.html?"+stringify(params);
+                let data = null;
+                let info = await Account.shareInfo(id,num_iid,coupon_id);
+                let coupon = await Account.app.models.Coupon.findByNumIIDAndCouponId(num_iid,coupon_id);
+                if (coupon){
+                    let params:any = {
+                        picUrl:coupon.product.pict_url,
+                        title:coupon.product.title,
+                        zk_final_price:coupon.product.zk_final_price,
+                        coupon_amount:coupon.coupon_amount,
+                        isTmall:coupon.product.user_type,
+                        tpwd:info.tpwd,
+                        num_iid:num_iid,
+                        coupon_click_url:info.coupon_click_url
+                    };
 
-                return Account.get(
-                    BASEURL+'/Accounts/captureHTMLScreen',
-                    {url:url,force:force},
-                    cb
-                );
+                    let urlData = await Account.app.models.Domain.random();
+                    params.shareUrl = urlData.url+'/couponShare.html?'+stringify(params);
+
+                    let url = "file://"+process.cwd()+"/client/couponShare.html?"+stringify(params);
+                    let ret = await Account.get(BASEURL+'/Accounts/captureHTMLScreen',{url:url,force:force});
+                    
+                    data = {shareImageUrl:ret.url,shareUrl:params.shareUrl}
+                }
+                return resolve(data,cb);
             } catch (err) {
                 return reject(err, cb);
             }
@@ -608,19 +609,20 @@ module.exports = function(Account:any) {
         if(!cb) return ret;    
     }
 
-    Account.remoteMethod('createCouponShareImage', {
+    Account.remoteMethod('getCouponShareImageAndLink', {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
-            {arg: 'coupon',type: 'Coupon',required:true,http: {source: 'body'}},
+            {arg: 'num_iid',type: 'string'},
+            {arg: 'coupon_id',type: 'string'},
             {arg: 'force',type: 'boolean', description:'force to recapture the screen and recreate the image'}
         ],
-        http: {path: '/:id/createCouponShareImage', verb: 'post'},
+        http: {path: '/:id/getCouponShareImageAndLink', verb: 'get'},
         returns: [
-            { arg: 'info', type: 'object',root:true}
+            { arg: 'data', type: 'object',root:true}
         ]
     });
 
-    Account.createAppShareImage = function(id:any,picUrl:string,force:boolean,cb:Function){
+    Account.getAppShareImageAndLink = function(id:any,picUrl:string,force:boolean,cb:Function){
         let func = async () => {
             try {
                 let account = await Account.findById(id);
@@ -631,11 +633,8 @@ module.exports = function(Account:any) {
                 };
                 let url = "file://"+process.cwd()+"/client/appShare.html?"+stringify(params);
 
-                return Account.get(
-                    BASEURL+'/Accounts/captureHTMLScreen',
-                    {url:url,force:force},
-                    cb
-                );
+                let ret = await Account.get(BASEURL+'/Accounts/captureHTMLScreen',{url:url,force:force});
+                return resolve({shareUrl:params.shareUrl,shareImageUrl:ret.url},cb);
             } catch (err) {
                 return reject(err, cb);
             }
@@ -644,15 +643,15 @@ module.exports = function(Account:any) {
         if(!cb) return ret;
     }
 
-    Account.remoteMethod('createAppShareImage', {
+    Account.remoteMethod('getAppShareImageAndLink', {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
             {arg: 'picUrl',type: 'string',required:true},
             {arg: 'force',type: 'boolean', description:'force to recapture the screen and recreate the image'}
         ],
-        http: {path: '/:id/createAppShareImage', verb: 'post'},
+        http: {path: '/:id/getAppShareImageAndLink', verb: 'get'},
         returns: [
-            { arg: 'info', type: 'object',root:true}
+            { arg: 'data', type: 'object',root:true}
         ]
     });
 

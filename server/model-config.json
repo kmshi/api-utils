@@ -47,8 +47,8 @@
           "buildMappingByParentInviteCode":true,
           "rate":true,
           "shareInfo":true,
-          "createCouponShareImage":true,
-          "createAppShareImage":true
+          "getCouponShareImageAndLink":true,
+          "getAppShareImageAndLink":true
         }
       }
     }
