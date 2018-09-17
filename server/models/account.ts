@@ -1,4 +1,5 @@
 import {resolve,reject} from '../lib/utils';
+import {stringify} from 'querystring';
 const BASEURL = process.env.ACCOUNT_SERVICE_BASEURL;
 
 module.exports = function(Account:any) {
@@ -576,4 +577,83 @@ module.exports = function(Account:any) {
             { arg: 'info', type: 'object',root:true}
         ]
     });
+
+    Account.createCouponShareImage = function(id:any,coupon:any,force:boolean,cb:Function){
+        let func = async () => {
+            try {
+                let info = await Account.shareInfo(id,coupon.num_iid,coupon.coupon_id);
+                let params:any = {
+                    picUrl:coupon.product.pict_url,
+                    title:coupon.product.title,
+                    zk_final_price:coupon.product.zk_final_price,
+                    coupon_amount:coupon.coupon_amount,
+                    isTmall:coupon.product.user_type,
+                    tpwd:info.tpwd
+                };
+        
+                params.shareUrl = info.share_domain+'?'+stringify(params);
+        
+                let url = "file://"+process.cwd()+"/client/productShare.html?"+stringify(params);
+
+                return Account.get(
+                    BASEURL+'/Accounts/captureHTMLScreen',
+                    {url:url,force:force},
+                    cb
+                );
+            } catch (err) {
+                return reject(err, cb);
+            }
+        };
+        let ret = func();
+        if(!cb) return ret;    
+    }
+
+    Account.remoteMethod('createCouponShareImage', {
+        accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+            {arg: 'coupon',type: 'Coupon',required:true,http: {source: 'body'}},
+            {arg: 'force',type: 'boolean', description:'force to recapture the screen and recreate the image'}
+        ],
+        http: {path: '/createCouponShareImage', verb: 'post'},
+        returns: [
+            { arg: 'info', type: 'object',root:true}
+        ]
+    });
+
+    Account.createAppShareImage = function(id:any,picUrl:string,shareUrl:string,force:boolean,cb:Function){
+        let func = async () => {
+            try {
+                let account = await Account.findById(id);
+                let params = {
+                    picUrl:picUrl,
+                    shareUrl:shareUrl+'?inviteCode='+account.inviteCode
+                };
+                let url = "file://"+process.cwd()+"/client/appShare.html?"+stringify(params);
+
+                return Account.get(
+                    BASEURL+'/Accounts/captureHTMLScreen',
+                    {url:url,force:force},
+                    cb
+                );
+            } catch (err) {
+                return reject(err, cb);
+            }
+        };
+        let ret = func();
+        if(!cb) return ret;
+    }
+
+    Account.remoteMethod('createAppShareImage', {
+        accepts: [
+            {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+            {arg: 'picUrl',type: 'string',required:true},
+            {arg: 'shareUrl',type: 'string',required:true},
+            {arg: 'force',type: 'boolean', description:'force to recapture the screen and recreate the image'}
+        ],
+        http: {path: '/createAppShareImage', verb: 'post'},
+        returns: [
+            { arg: 'info', type: 'object',root:true}
+        ]
+    });
+
 }
