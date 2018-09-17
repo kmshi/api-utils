@@ -547,7 +547,7 @@ module.exports = function(Account:any) {
                 }
                 
                 let urlData = await Account.app.models.Domain.random();
-                info.share_domain = urlData.url;
+                info.share_domain = urlData.url+'/couponShare.html';
 
                 if (!!num_iid){
                     let shareData = await Account.app.models.Share.findOrRetrieveByPid(info.pid,num_iid,coupon_id);
@@ -593,7 +593,7 @@ module.exports = function(Account:any) {
         
                 params.shareUrl = info.share_domain+'?'+stringify(params);
         
-                let url = "file://"+process.cwd()+"/client/productShare.html?"+stringify(params);
+                let url = "file://"+process.cwd()+"/client/couponShare.html?"+stringify(params);
 
                 return Account.get(
                     BASEURL+'/Accounts/captureHTMLScreen',
@@ -614,19 +614,20 @@ module.exports = function(Account:any) {
             {arg: 'coupon',type: 'Coupon',required:true,http: {source: 'body'}},
             {arg: 'force',type: 'boolean', description:'force to recapture the screen and recreate the image'}
         ],
-        http: {path: '/createCouponShareImage', verb: 'post'},
+        http: {path: '/:id/createCouponShareImage', verb: 'post'},
         returns: [
             { arg: 'info', type: 'object',root:true}
         ]
     });
 
-    Account.createAppShareImage = function(id:any,picUrl:string,shareUrl:string,force:boolean,cb:Function){
+    Account.createAppShareImage = function(id:any,picUrl:string,force:boolean,cb:Function){
         let func = async () => {
             try {
                 let account = await Account.findById(id);
+                let share_domain = await Account.app.models.Domain.random().url;
                 let params = {
                     picUrl:picUrl,
-                    shareUrl:shareUrl+'?inviteCode='+account.inviteCode
+                    shareUrl:share_domain+'/appShare.html?inviteCode='+account.inviteCode
                 };
                 let url = "file://"+process.cwd()+"/client/appShare.html?"+stringify(params);
 
@@ -647,10 +648,9 @@ module.exports = function(Account:any) {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
             {arg: 'picUrl',type: 'string',required:true},
-            {arg: 'shareUrl',type: 'string',required:true},
             {arg: 'force',type: 'boolean', description:'force to recapture the screen and recreate the image'}
         ],
-        http: {path: '/createAppShareImage', verb: 'post'},
+        http: {path: '/:id/createAppShareImage', verb: 'post'},
         returns: [
             { arg: 'info', type: 'object',root:true}
         ]
