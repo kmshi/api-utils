@@ -1,6 +1,7 @@
 {
     "name": "Advertisement",
     "base": "Model",
+    "plural":"Promotions",
     "strict":"filter",
     "idInjection": true,
     "properties": {

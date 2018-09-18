@@ -623,26 +623,19 @@ module.exports = function(Account:any) {
         ]
     });
 
-    Account.getAppShareImageAndLinks = function(id:any,force:boolean,cb:Function){
+    Account.getAppShareImageAndLink = function(id:any,picUrl:string,force:boolean,cb:Function){
         let func = async () => {
             try {
-                let picUrls = ['post1.jpg','post2.jpg','post3.jpg','post4.jpg'];
-                let infos = [];
                 let account = await Account.findById(id);
                 let domain = await Account.app.models.Domain.random();
+                let params = {
+                    picUrl: picUrl,
+                    shareUrl: domain.url + '/appShare.html?inviteCode=' + account.inviteCode
+                };
+                let url = "file://" + process.cwd() + "/client/appShare.html?" + stringify(params);
 
-                for(let i=0;i<picUrls.length;i++){
-                    let picUrl = picUrls[i];
-                    let params = {
-                        picUrl:picUrl,
-                        shareUrl:domain.url+'/appShare.html?inviteCode='+account.inviteCode
-                    };
-                    let url = "file://"+process.cwd()+"/client/appShare.html?"+stringify(params);
-
-                    let ret = await Account.get(BASEURL+'/Accounts/captureHTMLScreen',{url:url,width:750,height:1334,force:force});
-                    infos.push({shareUrl:params.shareUrl,shareImageUrl:ret.url});
-                }
-                return resolve(infos,cb);
+                let ret = await Account.get(BASEURL + '/Accounts/captureHTMLScreen', { url: url, width: 750, height: 1334, force: force });
+                return resolve({shareUrl:params.shareUrl,shareImageUrl:ret.url},cb);
             } catch (err) {
                 return reject(err, cb);
             }
@@ -651,14 +644,36 @@ module.exports = function(Account:any) {
         if(!cb) return ret;
     }
 
-    Account.remoteMethod('getAppShareImageAndLinks', {
+    Account.remoteMethod('getAppShareImageAndLink', {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
+            {arg: 'picUrl', type: 'string',description:"background image url"},
             {arg: 'force',type: 'boolean', description:'force to recapture the screen and recreate the image'}
         ],
-        http: {path: '/:id/getAppShareImageAndLinks', verb: 'get'},
+        http: {path: '/:id/getAppShareImageAndLink', verb: 'get'},
         returns: [
-            { arg: 'data', type: ['object'],root:true}
+            { arg: 'data', type: 'object',root:true}
+        ]
+    });
+
+    Account.getPostImageUrls = function(cb:Function){
+        cb(
+            null,
+            [
+                "http://friends.coolhuo.cn/posts/post1.jpg",
+                "http://friends.coolhuo.cn/posts/post2.jpg",
+                "http://friends.coolhuo.cn/posts/post3.jpg",
+                "http://friends.coolhuo.cn/posts/post4.jpg"
+            ]
+        );
+    }
+
+    Account.remoteMethod('getPostImageUrls', {
+        accepts: [
+        ],
+        http: {path: '/getPostImageUrls', verb: 'get'},
+        returns: [
+            { arg: 'urls', type: ['string'],root:true}
         ]
     });
 

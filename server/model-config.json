@@ -48,7 +48,8 @@
           "rate":true,
           "shareInfo":true,
           "getCouponShareImageAndLink":true,
-          "getAppShareImageAndLinks":true,
+          "getAppShareImageAndLink":true,
+          "getPostImageUrls":true,
           "getMasterWechatId":true
         }
       }
