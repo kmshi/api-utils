@@ -270,10 +270,10 @@ module.exports = function(Account:any) {
         ]
     });
 
-    Account.getLevel1Children = function (id:any,page_no:number,page_size:number,cb: Function) {
+    Account.getLevel1Children = function (id:any,page_no:number,page_size:number,type:number,cb: Function) {
         return Account.get(
             BASEURL+'/Accounts/'+id+'/getLevel1Children',
-            {page_no:page_no,page_size:page_size},
+            {page_no:page_no,page_size:page_size,type:type},
             cb
         );
     }
@@ -282,7 +282,8 @@ module.exports = function(Account:any) {
         accepts: [
             {arg: 'id', type: 'any', description: 'Model id', required: true,http: {source: 'path'}},
             {arg: 'page_no',type: 'number'},
-            {arg: 'page_size',type: 'number'}
+            {arg: 'page_size',type: 'number'},
+            {arg: 'type',type: 'number',description:"null/0:all,1:fan,2:member"}
         ],
         http: {path: '/:id/getLevel1Children', verb: 'get'},
         returns: [
