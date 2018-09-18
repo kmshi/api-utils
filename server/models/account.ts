@@ -589,7 +589,7 @@ module.exports = function(Account:any) {
                         isTmall:coupon.product.user_type,
                         tpwd:info.tpwd,
                         num_iid:num_iid,
-                        coupon_click_url:info.coupon_click_url
+                        //coupon_click_url:info.coupon_click_url
                     };
 
                     let urlData = await Account.app.models.Domain.random();
@@ -626,10 +626,10 @@ module.exports = function(Account:any) {
         let func = async () => {
             try {
                 let account = await Account.findById(id);
-                let share_domain = await Account.app.models.Domain.random().url;
+                let domain = await Account.app.models.Domain.random();
                 let params = {
                     picUrl:picUrl,
-                    shareUrl:share_domain+'/appShare.html?inviteCode='+account.inviteCode
+                    shareUrl:domain.url+'/appShare.html?inviteCode='+account.inviteCode
                 };
                 let url = "file://"+process.cwd()+"/client/appShare.html?"+stringify(params);
 

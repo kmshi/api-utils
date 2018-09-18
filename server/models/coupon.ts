@@ -56,7 +56,7 @@ module.exports = function (Coupon: any) {
     Coupon.findByNumIIDAndCouponId = function(num_iid:string,coupon_id:string,cb:Function){
         let func = async () => {
             try {
-                let coupon = await Coupon.get(BASEURL+'/Coupons/'+coupon_id,{include:"product"}).catch(()=>{});
+                let coupon = await Coupon.get(BASEURL+'/Coupons/'+coupon_id,{filter:{include:"product"}}).catch(()=>{});
                 if(coupon) return resolve(coupon,cb);
                 let products = await Coupon.get(BASEURL+'/Alimamas/getItemInfos',{num_iids:num_iid}).catch(()=>{});
                 if (products && products.length==1){
