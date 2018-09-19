@@ -116,6 +116,7 @@
         "sharedMethods": {
           "*": false,
           "search": true,
+          "findByNumIIDAndCouponId":true,
           "hotkeywords":true,
           "queryTpwd":true
         }
