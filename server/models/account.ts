@@ -590,6 +590,8 @@ module.exports = function(Account:any) {
                         isTmall:coupon.product.user_type,
                         tpwd:info.tpwd,
                         num_iid:num_iid,
+                        volume:coupon.product.volume,
+                        valid_period:coupon.coupon_end_time.toISOString().substr(0,10),
                         //coupon_click_url:info.coupon_click_url
                     };
 
@@ -597,7 +599,7 @@ module.exports = function(Account:any) {
                     params.shareUrl = urlData.url+'/couponShare.html?'+stringify(params);
 
                     let url = "file://"+process.cwd()+"/client/couponShare.html?"+stringify(params);
-                    let ret = await Account.get(BASEURL+'/Accounts/captureHTMLScreen',{url:url,force:force});
+                    let ret = await Account.get(BASEURL+'/Accounts/captureHTMLScreen',{url:url,width: 750, height: 1120,force:force});
                     
                     data = {shareImageUrl:ret.url,shareUrl:params.shareUrl}
                 }
