@@ -582,23 +582,34 @@ module.exports = function(Account:any) {
                 let info = await Account.shareInfo(id,num_iid,coupon_id);
                 let coupon = await Account.app.models.Coupon.findByNumIIDAndCouponId(num_iid,coupon_id);
                 if (coupon){
-                    let params:any = {
-                        picUrl:coupon.product.pict_url,
-                        title:coupon.product.title,
-                        zk_final_price:coupon.product.zk_final_price,
-                        coupon_amount:coupon.coupon_amount,
-                        isTmall:coupon.product.user_type,
-                        tpwd:info.tpwd,
+                    let params:any = {                        
+                        tpwd:info.tpwd, 
                         num_iid:num_iid,
-                        volume:coupon.product.volume,
-                        valid_period:coupon.coupon_end_time.toISOString().substr(0,10),
+                        coupon_id:coupon.coupon_id,
                         //coupon_click_url:info.coupon_click_url
                     };
 
                     let urlData = await Account.app.models.Domain.random();
+                    //the share url for qrcode should be short!!!
                     params.shareUrl = urlData.url+'/couponShare.html?'+stringify(params);
 
+                    params = Object.assign(params,{
+                        picUrl:coupon.product.pict_url,
+                        title:coupon.product.title,
+                        isTmall:coupon.product.user_type,
+                        zk_final_price:coupon.product.zk_final_price,
+                        coupon_amount:coupon.coupon_amount,
+                        volume:coupon.product.volume,
+                        valid_period:coupon.coupon_end_time.substr(0,10),
+                    });
+                    
+
                     let url = "file://"+process.cwd()+"/client/couponShare.html?"+stringify(params);
+                    if(process.cwd()!='/opt/cloud'){
+                        console.log('getCouponShareImageAndLink',url);
+                        throw new Error("Not in docker env,the local h5 template path is not correct,it is in account service folder,please check backend console.");
+                    }
+                    
                     let ret = await Account.get(BASEURL+'/Accounts/captureHTMLScreen',{url:url,width: 750, height: 1120,force:force});
                     
                     data = {shareImageUrl:ret.url,shareUrl:params.shareUrl}
