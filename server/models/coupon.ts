@@ -15,7 +15,7 @@ module.exports = function (Coupon: any) {
 
     Coupon.remoteMethod('search', {
         accepts: [
-            {arg: 'queryOrNum_iid',type: 'string',description:'num_iid or query/keyword'},
+            {arg: 'queryOrNum_iid',type: 'string',required: true,description:'num_iid or query/keyword'},
             {arg: 'has_coupon',type: 'boolean',description:'是否有优惠券，设置为true表示该商品有优惠券，设置为false或不设置表示不判断这个属性'},
             {arg: 'page_no',type: 'number',description:'第几页，默认：１'},
             {arg: 'page_size',type: 'number',description:'页大小，默认20，1~100'},
@@ -32,7 +32,7 @@ module.exports = function (Coupon: any) {
 
     Coupon.remoteMethod('queryTpwd', {
         accepts: [
-            {arg: 'password_content', type: 'string'}
+            {arg: 'password_content', type: 'string',required: true}
         ],
         http: {path: '/queryTpwd', verb: 'get'},
         returns: [
@@ -73,4 +73,15 @@ module.exports = function (Coupon: any) {
         let ret = func();
         if(!cb) return ret;
     }
+
+    Coupon.remoteMethod('findByNumIIDAndCouponId', {
+        accepts: [
+            { arg: 'num_iid', type: 'string',required: true},
+            { arg: 'coupon_id', type: 'string'}
+        ],
+        http: {path: '/findByNumIIDAndCouponId', verb: 'get'},
+        returns: [
+            { arg: 'coupon', type: 'Coupon',root:true}
+        ]
+    });
 }
