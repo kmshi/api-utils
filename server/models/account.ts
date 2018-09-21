@@ -604,11 +604,7 @@ module.exports = function(Account:any) {
                     });
                     
 
-                    let url = "file://"+process.cwd()+"/client/couponShare.html?"+stringify(params);
-                    if(process.cwd()!='/opt/cloud'){
-                        console.log('getCouponShareImageAndLink',url);
-                        throw new Error("Not in docker env,the local h5 template path is not correct,it is in account service folder,please check backend console.");
-                    }
+                    let url = "/client/couponShare.html?"+stringify(params);
                     
                     let ret = await Account.get(BASEURL+'/Accounts/captureHTMLScreen',{url:url,width: 750, height: 1120,force:force});
                     
@@ -645,7 +641,7 @@ module.exports = function(Account:any) {
                     picUrl: picUrl,
                     shareUrl: domain.url + '/appShare.html?inviteCode=' + account.inviteCode
                 };
-                let url = "file://" + process.cwd() + "/client/appShare.html?" + stringify(params);
+                let url = "/client/appShare.html?" + stringify(params);
 
                 let ret = await Account.get(BASEURL + '/Accounts/captureHTMLScreen', { url: url, width: 750, height: 1334, force: force });
                 return resolve({shareUrl:params.shareUrl,shareImageUrl:ret.url},cb);
