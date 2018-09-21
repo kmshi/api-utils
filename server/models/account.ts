@@ -578,20 +578,18 @@ module.exports = function(Account:any) {
     Account.getCouponShareImageAndLink = function(id:any,num_iid:string,coupon_id:string,force:boolean,cb:Function){
         let func = async () => {
             try {
-                let data = null;
-                let info = await Account.shareInfo(id,num_iid,coupon_id);
+                let data = {};
+                let account = await Account.findById(id);
                 let coupon = await Account.app.models.Coupon.findByNumIIDAndCouponId(num_iid,coupon_id);
                 if (coupon){
                     let params:any = {                        
-                        tpwd:info.tpwd, 
-                        num_iid:num_iid,
-                        coupon_id:coupon.coupon_id,
-                        //coupon_click_url:info.coupon_click_url
+                        inviteCode:account.inviteCode, 
+                        num_iid:num_iid
                     };
 
                     let urlData = await Account.app.models.Domain.random();
                     //the share url for qrcode should be short!!!
-                    params.shareUrl = urlData.url+'/couponShare.html?'+stringify(params);
+                    params.shareUrl = urlData.url+'/couponShare?'+stringify(params);
 
                     params = Object.assign(params,{
                         picUrl:coupon.product.pict_url,
@@ -639,7 +637,7 @@ module.exports = function(Account:any) {
                 let domain = await Account.app.models.Domain.random();
                 let params = {
                     picUrl: picUrl,
-                    shareUrl: domain.url + '/appShare.html?inviteCode=' + account.inviteCode
+                    shareUrl: domain.url + '/appShare?inviteCode=' + account.inviteCode
                 };
                 let url = "/client/appShare.html?" + stringify(params);
 
