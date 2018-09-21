@@ -22,6 +22,19 @@ module.exports = function(Account:any) {
         http: {verb: 'get', path: '/:id'}
     });
 
+    Account.findByInviteCode = function(inviteCode:string,cb: Function){
+        return Account.get(BASEURL+'/Accounts/findByInviteCode',{inviteCode:inviteCode},cb);
+    }
+
+    Account.remoteMethod('findByInviteCode', {
+        description: 'Find a model instance by {{inviteCode}} from the data source.',
+        accepts: [
+          {arg: 'inviteCode', type: 'string'}
+        ],
+        http: {verb: 'get', path: '/findByInviteCode'},
+        returns: {arg: 'data', type: 'Account', root: true}
+    });
+
     Account.findOrCreateFanByUnionId = function (unionId: string, appId: string, openId: string, userInfo: any, cb: Function) {
         return Account.post(
             BASEURL+'/Accounts/findOrCreateFanByUnionId',
@@ -30,7 +43,6 @@ module.exports = function(Account:any) {
             cb
         );
     }
-
 
     Account.remoteMethod('findOrCreateFanByUnionId', {
         accepts: [

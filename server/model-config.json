@@ -21,6 +21,7 @@
         "sharedMethods": {
           "*": false,
           "findById":true,
+          "findByInviteCode":true,
           "findOrCreateFanByUnionId": true,
           "findOrCreateFanByMobilePhone":true,
           "requestSMSCode":true,
