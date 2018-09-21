@@ -605,6 +605,7 @@ module.exports = function(Account:any) {
 
                     params = Object.assign(params,{
                         picUrl:coupon.product.pict_url,
+                        picUrlBackup:coupon.product.small_images?coupon.product.small_images[0]:coupon.product.pict_url,
                         title:coupon.product.title,
                         isTmall:coupon.product.user_type,
                         zk_final_price:coupon.product.zk_final_price,
