@@ -19,6 +19,8 @@
     "agenda": "^1.0.3",
     "agendash": "git+https://github.com/haxejs/agendash.git#kmshi",
     "baidu-aip-sdk": "^2.1.0",
+    "nightmare": "^3.0.1",
+    "gm": "^1.23.1",
     "bunyan": "^1.8.12",
     "bunyan-slack": "0.0.10",
     "busboy": "^0.2.14",
