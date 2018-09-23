@@ -1,5 +1,5 @@
 {
-  "name": "gateway",
+  "name": "utils",
   "version": "1.0.0",
   "main": "server/server.js",
   "engines": {
@@ -16,9 +16,6 @@
     "@mean-expert/boot-script": "^1.0.0",
     "@mean-expert/loopback-sdk-builder": "^2.1.1",
     "@mean-expert/model": "^1.0.9",
-    "@types/mocha": "^2.2.44",
-    "@types/node": "^8.0.47",
-    "@types/node-fetch": "^1.6.7",
     "agenda": "^1.0.3",
     "agendash": "git+https://github.com/haxejs/agendash.git#kmshi",
     "baidu-aip-sdk": "^2.1.0",
@@ -54,6 +51,9 @@
     "weixin-pay": "^1.1.7"
   },
   "devDependencies": {
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.47",
+    "@types/node-fetch": "^1.6.7",
     "eslint": "^3.17.1",
     "eslint-config-loopback": "^8.0.0"
   },
