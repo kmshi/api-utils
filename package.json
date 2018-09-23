@@ -20,6 +20,7 @@
     "agendash": "git+https://github.com/haxejs/agendash.git#kmshi",
     "baidu-aip-sdk": "^2.1.0",
     "nightmare": "^3.0.1",
+    "buffer-from": "^1.1.1",
     "gm": "^1.23.1",
     "bunyan": "^1.8.12",
     "bunyan-slack": "0.0.10",
