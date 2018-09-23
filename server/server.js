@@ -24,7 +24,7 @@ function startEurekaClient(){
   const host_name = process.env.EUREKA_CLIENT_EXTERNAL_HOSTNAME || 'localhost';
   const eureka_urls = process.env.EUREKA_SERVICE_URL ||"http://localhost:8700/eureka/apps";
   const app_port = process.env.EUREKA_CLIENT_EXTERNAL_PORT || app.get('port');
-  const container_id = process.env.HOSTNAME || '408daec6d2c8';
+  const container_id = process.env.HOSTNAME || '408daecd2001';
   
   const Eureka = require('eureka-js-client').Eureka;
   const client = new Eureka({
