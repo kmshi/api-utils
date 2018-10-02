@@ -22,7 +22,8 @@
           "*": false,
           "captureHTMLScreen": true,
           "copyRemoteFile": true,
-          "uptoken": true
+          "recognize": true,
+          "uploadToken": true
         }
       }
     }
