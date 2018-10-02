@@ -7,17 +7,13 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "gensdk": "./node_modules/.bin/lb-sdk server/server client/src/app/shared/sdk -i disabled",
     "start": "node server/server.js",
     "posttest": "npm run lint",
     "test": "NODE_ENV=testing npm run start"
   },
   "dependencies": {
     "@mean-expert/boot-script": "^1.0.0",
-    "@mean-expert/loopback-sdk-builder": "^2.1.1",
     "@mean-expert/model": "^1.0.9",
-    "agenda": "^1.0.3",
-    "agendash": "git+https://github.com/haxejs/agendash.git#kmshi",
     "baidu-aip-sdk": "^2.1.0",
     "nightmare": "^3.0.1",
     "buffer-from": "^1.1.1",

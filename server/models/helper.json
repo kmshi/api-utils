@@ -1,0 +1,20 @@
+{
+    "name": "Helper",
+    "base": "Model",
+    "idInjection": true,
+    "strict":"filter",
+    "options": {
+      "validateUpsert": true
+    },
+    "properties": {
+    },
+    "scope": {
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [
+    ],
+    "methods": {},
+    "mixins": {
+    }
+}

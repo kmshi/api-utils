@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <title>商品页</title>
+    <link rel="stylesheet" href="style/weui.min.css"/>
+    <!-- <link rel="stylesheet" href="fonts/iconfont.css"/> -->
+    <link rel="stylesheet" href="style/swiper.min.css"/>
+	<link rel="stylesheet" href="style/wx.css"/>
+	<script src="js/flexible.js"></script>
+	<script src="js/qrcode.min.js"></script>
+</head>
+<body style="margin:0 !important;">
+<div class="weui-content">
+	<div class="swiper-container goods-container">
+		<div class="swiper-wrapper">
+		  <div class="swiper-slide">
+			  <img id="picUrl" src="images/goods-slide.jpg" alt="" onerror="imageError(this)" />
+		  </div>
+		</div>
+	</div>
+	<!--介绍-->
+	<div class="good-grids">
+		<h1 class="goods-title"><span id="tmall" class="icon icon-tmall"></span><span id="taobao" class="icon icon-taobao"></span> <span id="title">2018夏季新款圆领短袖T恤时尚青年纯色免烫免烫薄款夏装批发</span></h1>
+		<div class="weui-cell goods-in-cell">
+			<div class="weui-cell__bd">
+				<p class="cost-price"><del>原价：￥<span id="zk_final_price">69.9</span></del></p>
+				<div class="zk-info">
+					<span class="tag">券后价</span><span class="q-fuhao">￥</span><span class="lg" id="coupon_after_price">8.90</span>
+				</div>
+				<div class="sold-number">销量：<span id="volume">58503</span>件</div>
+			</div>
+			<a href="#" class="counp-box">
+				<div class="counp-in">
+					<h3><span id="coupon_amount">30</span>元优惠券</h3>
+					<p class="c-times">结束日期:<span id="valid_period">2018-07-17</span></p>
+				</div>
+			</a>
+		</div>
+		<div class="weui-cell goods-in-cell">
+			<div class="weui-cell__bd">
+				<div style="text-align:right">长按图片，识别二维码领取优惠劵</div>
+			</div>
+		</div>
+	</div>
+</div>
+<canvas id="canvas"></canvas>
+
+<script>
+	function getQueryVariable(variable) {
+		var query = window.location.search.substring(1);
+		var vars = query.split('&');
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split('=');
+			if (decodeURIComponent(pair[0]) == variable) {
+				return decodeURIComponent(pair[1]);
+			}
+		}
+		return null;
+	}
+
+	function imageError(element) {
+		element.onerror='';
+		let picUrlBackup = getQueryVariable('picUrlBackup');             
+        element.src = picUrlBackup;
+    }
+
+	const picUrl = getQueryVariable('picUrl');
+	if(picUrl) document.getElementById('picUrl').setAttribute('src',picUrl);
+
+	const isTmall = getQueryVariable('isTmall');
+	if(isTmall) {
+		document.getElementById('tmall').style.display = 'inline-block';
+		document.getElementById('taobao').style.display = 'none';
+	}else{
+		document.getElementById('tmall').style.display = 'none';
+		document.getElementById('taobao').style.display = 'inline-block';
+	}
+	const title = getQueryVariable('title');
+	if(title) document.getElementById('title').textContent = title;
+
+	const zk_final_price = getQueryVariable('zk_final_price');
+	if(zk_final_price) document.getElementById('zk_final_price').textContent = zk_final_price;
+
+	const coupon_amount = getQueryVariable('coupon_amount');
+	if(coupon_amount) document.getElementById('coupon_amount').textContent = coupon_amount;
+
+	if (zk_final_price && coupon_amount) document.getElementById('coupon_after_price').textContent = (+zk_final_price - coupon_amount).toFixed(2);
+	
+	//const tpwd = getQueryVariable('tpwd');
+	//const num_iid = getQueryVariable('num_iid');
+
+	const volume = getQueryVariable('volume') || 100;
+	document.getElementById('volume').textContent = volume;
+
+	const valid_period = getQueryVariable('valid_period');
+	if(valid_period) document.getElementById('valid_period').textContent = valid_period;
+
+	const shareUrl = getQueryVariable('shareUrl')||'http://sj.qq.com/myapp/detail.htm?apkName=com.jfkj.honeyearn';
+	QRCode.toCanvas(document.getElementById('canvas'), shareUrl,{
+		color:{light:'#fffa',dark:'#000'}
+	}, function (error) {
+		if (error) return console.error(error);
+		document.getElementById('canvas').style = "display: block;width: 200px;height: 200px;position: absolute;left:550px;top:550px;z-index:100;";
+	});
+</script>
+
+</body>
+</html>
