@@ -36,58 +36,55 @@ module.exports = function (Helper: any) {
         key = 'screens/'+key;//bind key with prefix
         if (!width) width = 750;
         if (!height) width = 1334;
+        let xvfbStarted = false;
 
-        bucketManager.stat(process.env.QINIU_BUCKET, key, function(err:any, respBody:any, respInfo:any) {
-            if (err) return cb(err);
-            if (respInfo.statusCode == 200 && !force) {
-                respBody.url = process.env.QINIU_DOMAIN+'/'+key;
-                cb(null,respBody);
-            } else {
-                var xvfb = new Xvfb();
-                xvfb.start((err: any) => {
-                    if (err) return cb(err);
+        let func = async ()=>{
+            var xvfb = new Xvfb();
+            let xvfbStartPromise = bluebird.promisify(xvfb.start,{context:xvfb,multiArgs:false});
+            let xvfbStopPromise = bluebird.promisify(xvfb.stop,{context:xvfb,multiArgs:false});
+            try{
+                let bucketManagerStatPromise = bluebird.promisify(bucketManager.stat,{context:bucketManager,multiArgs:true});
+                let respBody:any, respInfo:any;
+                [respBody,respInfo] = await bucketManagerStatPromise(process.env.QINIU_BUCKET, key);
+                if (respInfo.statusCode == 200 && !force){
+                    respBody.url = process.env.QINIU_DOMAIN+'/'+key;
+                    return resolve(respBody,cb);
+                }
 
-                    let nightmare = new Nightmare({
-                        //show: false,
-                        switches: {
-                            'ignore-certificate-errors': true
-                        }
-                    });
+                await xvfbStartPromise();
+                xvfbStarted = true;
 
-                    nightmare.viewport(width+36, height+36)
+                let nightmare = new Nightmare({
+                    //show: false,
+                    switches: {
+                        'ignore-certificate-errors': true
+                    }
+                });
+                await nightmare.viewport(width+36, height+36)
                         .goto(url)
                         .screenshot(outputImagePath,{x:0,y:0,width:width,height:height}) // Capture a screenshot to an image file.
-                        .end() // End the Nightmare session. Any queued operations are complated and the headless browser is terminated.        
-                        .then(() => {
-                            //let halfUrl = qiniu.util.encodedEntry(process.env.QINIU_BUCKET,key+'-half.png');
-                            var putPolicy = new qiniu.rs.PutPolicy({
-                                scope: process.env.QINIU_BUCKET + ":" + key,
-                                //deleteAfterDays: 30,
-                                //persistentOps:'imageMogr2/auto-orient/thumbnail/!50p/interlace/1/blur/1x0/quality/75|saveas/'+halfUrl
-                            });
-                            let uploadToken = putPolicy.uploadToken(mac);
-                            return new Promise((resolve: any, reject: any) => {
-                                formUploader.putFile(uploadToken, key, outputImagePath, putExtra, (err: any,
-                                    body: any, resp: any) => {
-                                    if (err) return reject(err);
-                                    return resolve(body);
-                                });
-                            });
-                        })
-                        .then((body:any) => {
-                            xvfb.stop(() => { });
-                            fs.unlinkSync(outputImagePath);
-                            body.url = process.env.QINIU_DOMAIN + '/' + key;
-                            cb(null, body);
-                        })
-                        .catch((err: any) => {
-                            xvfb.stop(() => { });
-                            //fs.unlinkSync(outputImagePath);
-                            cb(err);
-                        });
+                        .end(); // End the Nightmare session. Any queued operations are complated and the headless browser is terminated. 
+
+                //let halfUrl = qiniu.util.encodedEntry(process.env.QINIU_BUCKET,key+'-half.png');
+                var putPolicy = new qiniu.rs.PutPolicy({
+                    scope: process.env.QINIU_BUCKET + ":" + key,
+                    //deleteAfterDays: 30,
+                    //persistentOps:'imageMogr2/auto-orient/thumbnail/!50p/interlace/1/blur/1x0/quality/75|saveas/'+halfUrl
                 });
+                let uploadToken = putPolicy.uploadToken(mac);
+                let putFilePromise = bluebird.promisify(formUploader.putFile,{context:formUploader,multiArgs:false});
+                let body = await putFilePromise(uploadToken, key, outputImagePath, putExtra);
+                body.url = process.env.QINIU_DOMAIN + '/' + key;
+                return resolve(body,cb);
+            }catch(err){
+                return reject(err,cb);
+            }finally{
+                if (xvfbStarted) await xvfbStopPromise().catch(()=>{});
+                if (fs.existsSync(outputImagePath)) fs.unlinkSync(outputImagePath);
             }
-        });
+        };
+        let ret = func();
+        if(!cb) return ret;
     }
 
     Helper.remoteMethod('captureHTMLScreen', {
@@ -115,6 +112,14 @@ module.exports = function (Helper: any) {
 
         let func = async ()=>{
             try{
+                let bucketManagerStatPromise = bluebird.promisify(bucketManager.stat,{context:bucketManager,multiArgs:true});
+                let respBody:any, respInfo:any;
+                [respBody,respInfo] = await bucketManagerStatPromise(process.env.QINIU_BUCKET, key);
+                if (respInfo.statusCode == 200){
+                    respBody.url = process.env.QINIU_DOMAIN+'/'+key;
+                    return resolve(respBody,cb);
+                }
+
                 if (!fs.existsSync(outputImagePath)){
                     let gmRequest = gm(request(picUrl));
                     let gmRequestWritePromise = bluebird.promisify(gmRequest.write,{context:gmRequest});
@@ -137,10 +142,11 @@ module.exports = function (Helper: any) {
                     scope: process.env.QINIU_BUCKET + ":" + key,
                 });
                 let uploadToken = putPolicy.uploadToken(mac);
-                let putFilePromise = bluebird.promisify(formUploader.putFile,{context:formUploader});
-                await putFilePromise(uploadToken, key, qrCodeImagePath, putExtra);
+                let putFilePromise = bluebird.promisify(formUploader.putFile,{context:formUploader,multiArgs:false});
+                let body = await putFilePromise(uploadToken, key, qrCodeImagePath, putExtra);
+                body.url = process.env.QINIU_DOMAIN + '/' + key;
 
-                return resolve(process.env.QINIU_DOMAIN + '/' + key,cb);
+                return resolve(body,cb);
             }catch(err){
                 return reject(err,cb);
             }finally{
@@ -162,7 +168,7 @@ module.exports = function (Helper: any) {
         ],
         http: {path: '/drawQRCodeOnPicture', verb: 'get'},
         returns: [
-            { arg: 'url', type: 'string'}
+            { arg: 'info', type: 'object',root:true}
         ]
     });
 
@@ -172,29 +178,29 @@ module.exports = function (Helper: any) {
         let key = uuidv5(url,uuidv5.URL) + ext;
         //key = 'headimgs/'+key;//bind key with prefix
 
-        let promiseCopy = new Promise((resolve:any,reject:any)=>{
-            bucketManager.stat(process.env.QINIU_BUCKET, key, function(err:any, respBody:any, respInfo:any) {
-                if (err) return reject(err);
-                if (respInfo.statusCode == 200) {
+        let func = async ()=>{
+            try{
+                let bucketManagerStatPromise = bluebird.promisify(bucketManager.stat,{context:bucketManager,multiArgs:true});
+                let respBody:any, respInfo:any;
+                [respBody,respInfo] = await bucketManagerStatPromise(process.env.QINIU_BUCKET, key);
+                if (respInfo.statusCode == 200){
                     respBody.url = process.env.QINIU_DOMAIN+'/'+key;
-                    resolve(respBody);
-                } else {
-                    bucketManager.fetch(url,process.env.QINIU_BUCKET,key,function (err:any, respBody:any, respInfo:any) {
-                        if (err) return reject(err);
-
-                        if (respInfo.statusCode == 200) {
-                            respBody.url = process.env.QINIU_DOMAIN+'/'+key;
-                            resolve(respBody);
-                        } else {
-                            reject(respInfo);
-                        }
-                    });
+                    return resolve(respBody,cb);
                 }
-            });
-        });
-
-        if (!cb) return promiseCopy;
-        promiseCopy.then((ret:any)=>{cb(null,ret)}).catch((err:any)=>{cb(err)});
+                let bucketManagerFetchPromise = bluebird.promisify(bucketManager.fetch,{context:bucketManager,multiArgs:true});
+                [respBody,respInfo] = await bucketManagerFetchPromise(url,process.env.QINIU_BUCKET,key);
+                if (respInfo.statusCode == 200){
+                    respBody.url = process.env.QINIU_DOMAIN+'/'+key;
+                    return resolve(respBody,cb);
+                }else{
+                    throw respInfo;
+                }
+            }catch(err){
+                return reject(err,cb);
+            }
+        };
+        let ret = func();
+        if(!cb) return ret;
     }
 
     Helper.remoteMethod('copyRemoteFile', {
