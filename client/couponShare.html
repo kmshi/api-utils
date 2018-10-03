@@ -16,7 +16,7 @@
 	<div class="swiper-container goods-container">
 		<div class="swiper-wrapper">
 		  <div class="swiper-slide">
-			  <img id="picUrl" src="images/goods-slide.jpg" alt="" onerror="imageError(this)" />
+			  <img id="picUrl" height="750px" src="images/goods-slide.jpg" alt="" onerror="imageError(this)" />
 		  </div>
 		</div>
 	</div>
@@ -40,7 +40,7 @@
 		</div>
 		<div class="weui-cell goods-in-cell">
 			<div class="weui-cell__bd">
-				<div style="text-align:right">长按图片，识别二维码领取优惠劵</div>
+				<div style="text-align:right" id="tip">长按图片，识别二维码领取优惠劵</div>
 			</div>
 		</div>
 	</div>
@@ -87,6 +87,14 @@
 	if(coupon_amount) document.getElementById('coupon_amount').textContent = coupon_amount;
 
 	if (zk_final_price && coupon_amount) document.getElementById('coupon_after_price').textContent = (+zk_final_price - coupon_amount).toFixed(2);
+	
+	if (!coupon_amount || coupon_amount==0){
+		document.getElementsByClassName('counp-box')[0].style.display = 'none';
+		document.getElementsByClassName('cost-price')[0].style.display = 'none';
+		if(zk_final_price) document.getElementById('coupon_after_price').textContent = zk_final_price;
+		document.getElementsByClassName('tag')[0].textContent = '特价';
+		document.getElementById('tip').textContent = '长按图片，识别二维码抢特价';
+	}
 	
 	//const tpwd = getQueryVariable('tpwd');
 	//const num_iid = getQueryVariable('num_iid');
