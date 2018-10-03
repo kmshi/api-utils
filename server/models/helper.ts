@@ -12,6 +12,10 @@ const os = require('os');
 const fs = require('fs');
 const path = require('path');
 var shelljs = require('shelljs');
+var request = require('request');
+var gm = require('gm');
+var QRCode = require('qrcode');
+var bluebird = require("bluebird");
 
 const qiniu = require("qiniu");
 var mac = new qiniu.auth.digest.Mac(process.env.QINIU_AK, process.env.QINIU_SK);
@@ -96,6 +100,75 @@ module.exports = function (Helper: any) {
         http: {path: '/captureHTMLScreen', verb: 'get'},
         returns: [
             { arg: 'info', type: 'object',root:true}
+        ]
+    });
+
+    Helper.drawQRCodeOnPicture = function(picUrl:string,qrText:string,x:number,y:number,width:number,height:number,cb:Function){
+        if (!x) x = 550;
+        if (!y) y = 550;
+        if (!width) width = 200;
+        if (!height) width = 200;
+        let picFileName = path.basename(Url.parse(picUrl).pathname);
+        let outputImagePath = `/tmp/${picFileName}`;
+        let qrCodeImagePath = `/tmp/${Date.now()}.png`;
+        let key = 'qrcodes/' + uuidv5(picUrl+'?shareUrl='+encodeURIComponent(qrText),uuidv5.URL)+'.png';
+
+        let func = async ()=>{
+            try{
+                if (!fs.existsSync(outputImagePath)){
+                    let gmRequest = gm(request(picUrl));
+                    let gmRequestWritePromise = bluebird.promisify(gmRequest.write,{context:gmRequest});
+                    await gmRequestWritePromise(outputImagePath);
+                }
+
+                let qrCodeToFilePromise = bluebird.promisify(QRCode.toFile,{context:QRCode});
+                await qrCodeToFilePromise(qrCodeImagePath,qrText,{
+                    color: {
+                      dark: '#00F',  // Blue dots
+                      light: '#0000' // Transparent background
+                    }
+                });
+                let gmResize = gm(qrCodeImagePath).resize(width, height, '!');
+                let gmResizeWritePromise = bluebird.promisify(gmResize.write,{context:gmResize});
+                await gmResizeWritePromise(qrCodeImagePath);
+                
+                //let gmComposite = gm(outputImagePath)
+                    //.composite(qrCodeToFilePromise);
+                    //.geometry(`${width}x${height}+${x}+${y}`);
+
+                //let gmCompositeWritePromise = bluebird.promisify(gmComposite.write,{context:gmComposite});
+                //await gmCompositeWritePromise(qrCodeImagePath);
+
+                var putPolicy = new qiniu.rs.PutPolicy({
+                    scope: process.env.QINIU_BUCKET + ":" + key,
+                });
+                let uploadToken = putPolicy.uploadToken(mac);
+                let putFilePromise = bluebird.promisify(formUploader.putFile,{context:formUploader});
+                await putFilePromise(uploadToken, key, qrCodeImagePath, putExtra);
+
+                return resolve(process.env.QINIU_DOMAIN + '/' + key,cb);
+            }catch(err){
+                return reject(err,cb);
+            }finally{
+                if (fs.existsSync(qrCodeImagePath)) fs.unlinkSync(qrCodeImagePath);
+            }
+        };
+        let ret = func();
+        if(!cb) return ret;
+    }
+
+    Helper.remoteMethod('drawQRCodeOnPicture', {
+        accepts: [
+            {arg: 'picUrl',type: 'string',required:true},
+            {arg: 'qrText',type: 'string',required:true},
+            {arg: 'x',type: 'number'},
+            {arg: 'y',type: 'number'},
+            {arg: 'width',type: 'number'},
+            {arg: 'height',type: 'number'}
+        ],
+        http: {path: '/drawQRCodeOnPicture', verb: 'get'},
+        returns: [
+            { arg: 'url', type: 'string'}
         ]
     });
 

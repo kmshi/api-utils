@@ -21,6 +21,7 @@
         "sharedMethods": {
           "*": false,
           "captureHTMLScreen": true,
+          "drawQRCodeOnPicture": true,
           "copyRemoteFile": true,
           "recognize": true,
           "uploadToken": true
