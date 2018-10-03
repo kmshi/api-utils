@@ -123,21 +123,15 @@ module.exports = function (Helper: any) {
 
                 let qrCodeToFilePromise = bluebird.promisify(QRCode.toFile,{context:QRCode});
                 await qrCodeToFilePromise(qrCodeImagePath,qrText,{
-                    color: {
-                      dark: '#00F',  // Blue dots
-                      light: '#0000' // Transparent background
-                    }
+                    color:{light:'#fffa',dark:'#000'}
                 });
-                let gmResize = gm(qrCodeImagePath).resize(width, height, '!');
+                let gmResize = gm(qrCodeImagePath).resize(width, height);
                 let gmResizeWritePromise = bluebird.promisify(gmResize.write,{context:gmResize});
                 await gmResizeWritePromise(qrCodeImagePath);
                 
-                //let gmComposite = gm(outputImagePath)
-                    //.composite(qrCodeToFilePromise);
-                    //.geometry(`${width}x${height}+${x}+${y}`);
-
-                //let gmCompositeWritePromise = bluebird.promisify(gmComposite.write,{context:gmComposite});
-                //await gmCompositeWritePromise(qrCodeImagePath);
+                let gmComposite = gm(outputImagePath).composite(qrCodeImagePath).geometry(`+${x}+${y}`);
+                let gmCompositeWritePromise = bluebird.promisify(gmComposite.write,{context:gmComposite});
+                await gmCompositeWritePromise(qrCodeImagePath);
 
                 var putPolicy = new qiniu.rs.PutPolicy({
                     scope: process.env.QINIU_BUCKET + ":" + key,
