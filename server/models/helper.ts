@@ -78,7 +78,7 @@ module.exports = function (Helper: any) {
                         })
                         .catch((err: any) => {
                             xvfb.stop(() => { });
-                            fs.unlinkSync(outputImagePath);
+                            //fs.unlinkSync(outputImagePath);
                             cb(err);
                         });
                 });
@@ -154,7 +154,7 @@ module.exports = function (Helper: any) {
           
         let putPolicy = new qiniu.rs.PutPolicy(options);
         let token = putPolicy.uploadToken(mac);
-        cb(null,token,process.env.QINIU_DOMAIN+'/'+key,thumbUrl);
+        cb(null,token,process.env.QINIU_DOMAIN+'/'+key,process.env.QINIU_DOMAIN+'/'+key+'-thumbnail');
     }
 
     Helper.remoteMethod('uploadToken', {
