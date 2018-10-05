@@ -51,19 +51,21 @@ module.exports = function (Helper: any) {
                     return resolve(respBody,cb);
                 }
 
-                await xvfbStartPromise();
-                xvfbStarted = true;
+                if (!fs.existsSync(outputImagePath)){
+                    await xvfbStartPromise();
+                    xvfbStarted = true;
 
-                let nightmare = new Nightmare({
-                    //show: false,
-                    switches: {
-                        'ignore-certificate-errors': true
-                    }
-                });
-                await nightmare.viewport(width+36, height+36)
+                    let nightmare = new Nightmare({
+                        //show: false,
+                        switches: {
+                            'ignore-certificate-errors': true
+                        }
+                    });
+                    await nightmare.viewport(width+36, height+36)
                         .goto(url)
                         .screenshot(outputImagePath,{x:0,y:0,width:width,height:height}) // Capture a screenshot to an image file.
                         .end(); // End the Nightmare session. Any queued operations are complated and the headless browser is terminated. 
+                }
 
                 //let halfUrl = qiniu.util.encodedEntry(process.env.QINIU_BUCKET,key+'-half.png');
                 var putPolicy = new qiniu.rs.PutPolicy({
@@ -80,7 +82,7 @@ module.exports = function (Helper: any) {
                 return reject(err,cb);
             }finally{
                 if (xvfbStarted) await xvfbStopPromise().catch(()=>{});
-                if (fs.existsSync(outputImagePath)) fs.unlinkSync(outputImagePath);
+                //if (fs.existsSync(outputImagePath)) fs.unlinkSync(outputImagePath);
             }
         };
         let ret = func();
