@@ -39,6 +39,9 @@ module.exports = function (Helper: any) {
         let xvfbStarted = false;
 
         let func = async ()=>{
+            let startTime = Date.now();
+            console.log('start captureHTMLScreen:'+url+' at '+ (new Date().toISOString()));
+
             var xvfb = new Xvfb();
             let xvfbStartPromise = bluebird.promisify(xvfb.start,{context:xvfb,multiArgs:false});
             let xvfbStopPromise = bluebird.promisify(xvfb.stop,{context:xvfb,multiArgs:false});
@@ -48,14 +51,14 @@ module.exports = function (Helper: any) {
                 [respBody,respInfo] = await bucketManagerStatPromise(process.env.QINIU_BUCKET, key);
                 if (respInfo.statusCode == 200 && !force){
                     respBody.url = process.env.QINIU_DOMAIN+'/'+key;
+                    console.log('end captureHTMLScreen found in qiniu:'+url+' time:'+(Date.now()-startTime))
                     return resolve(respBody,cb);
                 }
 
                 if (!fs.existsSync(outputImagePath)){
                     await xvfbStartPromise();
                     xvfbStarted = true;
-                    let startTime = Date.now();
-                    console.log('start screenshot:'+url+' at '+ (new Date().toISOString()));
+                    console.log('start screenshot:'+url+' time:'+(Date.now()-startTime));
 
                     let nightmare = new Nightmare({
                         show: false,
@@ -77,10 +80,13 @@ module.exports = function (Helper: any) {
                 });
                 let uploadToken = putPolicy.uploadToken(mac);
                 let putFilePromise = bluebird.promisify(formUploader.putFile,{context:formUploader,multiArgs:false});
+                console.log('start upload to qiniu:'+url+' time:'+(Date.now()-startTime));
                 let body = await putFilePromise(uploadToken, key, outputImagePath, putExtra);
+                console.log('end captureHTMLScreen:'+url+' time:'+(Date.now()-startTime));
                 body.url = process.env.QINIU_DOMAIN + '/' + key;
                 return resolve(body,cb);
             }catch(err){
+                console.log('end captureHTMLScreen with error:'+url+' time:'+(Date.now()-startTime));
                 return reject(err,cb);
             }finally{
                 if (xvfbStarted) await xvfbStopPromise().catch(()=>{});
