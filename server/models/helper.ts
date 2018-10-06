@@ -27,7 +27,7 @@ var putExtra = new qiniu.form_up.PutExtra();
 
 module.exports = function (Helper: any) {
 
-    Helper.captureHTMLScreen = function(url:string,width:number,height:number,force:boolean,cb:Function){
+    Helper.captureHTMLScreen = function(url:string,width:number,height:number,keepSize:boolean,cb:Function){
         if (!url.startsWith('http://') && !url.startsWith('https://')){
             url = "file://" + process.cwd() + url;
         }
@@ -49,7 +49,7 @@ module.exports = function (Helper: any) {
                 let bucketManagerStatPromise = bluebird.promisify(bucketManager.stat,{context:bucketManager,multiArgs:true});
                 let respBody:any, respInfo:any;
                 [respBody,respInfo] = await bucketManagerStatPromise(process.env.QINIU_BUCKET, key);
-                if (respInfo.statusCode == 200 && !force){
+                if (respInfo.statusCode == 200){
                     respBody.url = process.env.QINIU_DOMAIN+'/'+key;
                     console.log('end captureHTMLScreen found in qiniu:'+url+' time:'+(Date.now()-startTime))
                     return resolve(respBody,cb);
@@ -72,6 +72,12 @@ module.exports = function (Helper: any) {
                         .end(()=>console.log('end screenshot:'+url+' time:'+(Date.now()-startTime))); // End the Nightmare session. Any queued operations are complated and the headless browser is terminated. 
                 }
 
+                if (!keepSize){
+                    let gmResize = gm(outputImagePath).resize(width/2, height/2);
+                    let gmResizeWritePromise = bluebird.promisify(gmResize.write,{context:gmResize});
+                    await gmResizeWritePromise(outputImagePath);
+                }
+                
                 //let halfUrl = qiniu.util.encodedEntry(process.env.QINIU_BUCKET,key+'-half.png');
                 var putPolicy = new qiniu.rs.PutPolicy({
                     scope: process.env.QINIU_BUCKET + ":" + key,
@@ -102,7 +108,7 @@ module.exports = function (Helper: any) {
             {arg: 'url',type: 'string',required:true,description:'http/https,/client/appShare.html,/client/couponShare.html'},
             {arg: 'width',type: 'number', description:'h5 page width'},
             {arg: 'height',type: 'number', description:'h5 page height'},
-            {arg: 'force',type: 'boolean', description:'force to recapture the screen and recreate the image'}
+            {arg: 'keepSize',type: 'boolean', description:'keep original size or make the size to 1/2'}
         ],
         http: {path: '/captureHTMLScreen', verb: 'get'},
         returns: [
@@ -111,10 +117,10 @@ module.exports = function (Helper: any) {
     });
 
     Helper.drawQRCodeOnPicture = function(picUrl:string,qrText:string,x:number,y:number,width:number,height:number,cb:Function){
-        if (!x) x = 550;
-        if (!y) y = 550;
-        if (!width) width = 200;
-        if (!height) width = 200;
+        if (!x) x = 275;
+        if (!y) y = 275;
+        if (!width) width = 100;
+        if (!height) width = 100;
         let picFileName = path.basename(Url.parse(picUrl).pathname);
         let outputImagePath = `/tmp/${picFileName}`;
         let qrCodeImagePath = `/tmp/${Date.now()}.png`;
