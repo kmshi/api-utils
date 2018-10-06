@@ -54,9 +54,11 @@ module.exports = function (Helper: any) {
                 if (!fs.existsSync(outputImagePath)){
                     await xvfbStartPromise();
                     xvfbStarted = true;
+                    let startTime = Date.now();
+                    console.log('start screenshot:'+url+' at '+ (new Date().toISOString()));
 
                     let nightmare = new Nightmare({
-                        //show: false,
+                        show: false,
                         switches: {
                             'ignore-certificate-errors': true
                         }
@@ -64,7 +66,7 @@ module.exports = function (Helper: any) {
                     await nightmare.viewport(width+36, height+36)
                         .goto(url)
                         .screenshot(outputImagePath,{x:0,y:0,width:width,height:height}) // Capture a screenshot to an image file.
-                        .end(); // End the Nightmare session. Any queued operations are complated and the headless browser is terminated. 
+                        .end(()=>console.log('end screenshot:'+url+' time:'+(Date.now()-startTime))); // End the Nightmare session. Any queued operations are complated and the headless browser is terminated. 
                 }
 
                 //let halfUrl = qiniu.util.encodedEntry(process.env.QINIU_BUCKET,key+'-half.png');
