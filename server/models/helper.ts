@@ -63,6 +63,7 @@ module.exports = function (Helper: any) {
                     });
                     await nightmare.viewport(width+36, height+36)
                         .goto(url)
+                        .wait(1000)
                         .screenshot(outputImagePath,{x:0,y:0,width:width,height:height}) // Capture a screenshot to an image file.
                         .end(); // End the Nightmare session. Any queued operations are complated and the headless browser is terminated. 
                 }
