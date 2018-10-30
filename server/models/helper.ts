@@ -145,7 +145,7 @@ module.exports = function (Helper: any) {
 
                 let qrCodeToFilePromise = bluebird.promisify(QRCode.toFile,{context:QRCode});
                 await qrCodeToFilePromise(qrCodeImagePath,qrText,{
-                    color:{light:'#fffa',dark:'#000'}
+                    color:{light:'#fffc',dark:'#000'}
                 });
                 let gmResize = gm(qrCodeImagePath).resize(width, height);
                 let gmResizeWritePromise = bluebird.promisify(gmResize.write,{context:gmResize});

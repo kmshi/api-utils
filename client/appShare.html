@@ -34,7 +34,7 @@
             const shareUrl = getQueryVariable('shareUrl')||'http://sj.qq.com/myapp/detail.htm?apkName=com.jfkj.honeyearn';
             
             QRCode.toCanvas(document.getElementById('canvas'), shareUrl,{
-                color:{light:'#fffa',dark:'#000'}
+                color:{light:'#fffc',dark:'#000'}
             }, function (error) {
                 if (error) return console.error(error);
                 document.getElementById('canvas').style = "display: block;width: 280px;height: 280px;";
