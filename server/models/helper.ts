@@ -138,7 +138,7 @@ module.exports = function (Helper: any) {
                 }
 
                 if (!fs.existsSync(outputImagePath)){
-                    let gmRequest = gm(request(picUrl));
+                    let gmRequest = gm(request(picUrl,{timeout: 3000}));
                     let gmRequestWritePromise = bluebird.promisify(gmRequest.write,{context:gmRequest});
                     await gmRequestWritePromise(outputImagePath);
                 }
