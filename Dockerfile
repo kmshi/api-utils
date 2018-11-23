@@ -44,6 +44,7 @@ RUN ln -s /opt/ffmpeg-3.4.1-64bit-static/ffmpeg /usr/bin/ffmpeg
 ADD .   /opt/cloud
 RUN cd /opt/cloud/silk && make && make decoder
 RUN ln -s /opt/cloud/silk/decoder /usr/bin/decoder
+RUN cp -f /opt/cloud/limits.conf /etc/security/limits.conf
 
 RUN cd /opt/cloud && npm install && npm cache clean --force
 WORKDIR /opt/cloud
