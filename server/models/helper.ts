@@ -68,6 +68,7 @@ module.exports = function (Helper: any) {
                     });
                     await nightmare.viewport(width+36, height+36)
                         .goto(url)
+                        .wait(1000)
                         .screenshot(outputImagePath,{x:0,y:0,width:width,height:height}) // Capture a screenshot to an image file.
                         .end(()=>console.log('end screenshot:'+url+' time:'+(Date.now()-startTime))); // End the Nightmare session. Any queued operations are complated and the headless browser is terminated. 
                 }
@@ -137,14 +138,14 @@ module.exports = function (Helper: any) {
                 }
 
                 if (!fs.existsSync(outputImagePath)){
-                    let gmRequest = gm(request(picUrl));
+                    let gmRequest = gm(request(picUrl,{timeout: 3000}));
                     let gmRequestWritePromise = bluebird.promisify(gmRequest.write,{context:gmRequest});
                     await gmRequestWritePromise(outputImagePath);
                 }
 
                 let qrCodeToFilePromise = bluebird.promisify(QRCode.toFile,{context:QRCode});
                 await qrCodeToFilePromise(qrCodeImagePath,qrText,{
-                    color:{light:'#fffa',dark:'#000'}
+                    color:{light:'#fffc',dark:'#000'}
                 });
                 let gmResize = gm(qrCodeImagePath).resize(width, height);
                 let gmResizeWritePromise = bluebird.promisify(gmResize.write,{context:gmResize});
