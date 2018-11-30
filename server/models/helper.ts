@@ -74,7 +74,7 @@ module.exports = function (Helper: any) {
                 }
 
                 if (!keepSize){
-                    let gmResize = gm(outputImagePath).resize(width/2, height/2);
+                    let gmResize = gm(outputImagePath).resize(width/2, height/2).quality(100);
                     let gmResizeWritePromise = bluebird.promisify(gmResize.write,{context:gmResize});
                     await gmResizeWritePromise(outputImagePath);
                 }
@@ -138,7 +138,7 @@ module.exports = function (Helper: any) {
                 }
 
                 if (!fs.existsSync(outputImagePath)){
-                    let gmRequest = gm(request(picUrl,{timeout: 3000}));
+                    let gmRequest = gm(request(picUrl,{timeout: 3000})).quality(100);
                     let gmRequestWritePromise = bluebird.promisify(gmRequest.write,{context:gmRequest});
                     await gmRequestWritePromise(outputImagePath);
                 }
@@ -147,11 +147,11 @@ module.exports = function (Helper: any) {
                 await qrCodeToFilePromise(qrCodeImagePath,qrText,{
                     color:{light:'#fffc',dark:'#000'}
                 });
-                let gmResize = gm(qrCodeImagePath).resize(width, height);
+                let gmResize = gm(qrCodeImagePath).resize(width, height).quality(100);
                 let gmResizeWritePromise = bluebird.promisify(gmResize.write,{context:gmResize});
                 await gmResizeWritePromise(qrCodeImagePath);
                 
-                let gmComposite = gm(outputImagePath).composite(qrCodeImagePath).geometry(`+${x}+${y}`);
+                let gmComposite = gm(outputImagePath).composite(qrCodeImagePath).geometry(`+${x}+${y}`).quality(100);
                 let gmCompositeWritePromise = bluebird.promisify(gmComposite.write,{context:gmComposite});
                 await gmCompositeWritePromise(qrCodeImagePath);
 
