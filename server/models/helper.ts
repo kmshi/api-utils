@@ -35,7 +35,7 @@ module.exports = function (Helper: any) {
         let outputImagePath = `/tmp/${key}`;
         key = 'screens/'+key;//bind key with prefix
         if (!width) width = 750;
-        if (!height) width = 1334;
+        if (!height) height = 1334;
         let xvfbStarted = false;
 
         let func = async ()=>{
@@ -121,7 +121,7 @@ module.exports = function (Helper: any) {
         if (!x) x = 275;
         if (!y) y = 275;
         if (!width) width = 100;
-        if (!height) width = 100;
+        if (!height) height = 100;
         let picFileName = path.basename(Url.parse(picUrl).pathname);
         let outputImagePath = `/tmp/${picFileName}`;
         let qrCodeImagePath = `/tmp/${Date.now()}.png`;
